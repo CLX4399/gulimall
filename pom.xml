@@ -17,6 +17,7 @@
         <module>gulimall-product</module>
         <module>gulimall-coupon</module>
         <module>renren-generator</module>
+        <module>gulimall-common</module>
     </modules>
 
 </project>
