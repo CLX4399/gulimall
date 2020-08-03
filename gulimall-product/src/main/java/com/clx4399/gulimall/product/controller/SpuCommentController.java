@@ -3,7 +3,6 @@ package com.clx4399.gulimall.product.controller;
 import java.util.Arrays;
 import java.util.Map;
 
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.clx4399.gulimall.product.entity.SpuCommentEntity;
 import com.clx4399.gulimall.product.service.SpuCommentService;
 import com.clx4399.common.utils.PageUtils;
+import com.clx4399.common.utils.R;
+
 
 
 /**
@@ -21,7 +22,7 @@ import com.clx4399.common.utils.PageUtils;
  *
  * @author clx
  * @email whtclx@gmail.com
- * @date 2020-07-27 00:49:19
+ * @date 2020-08-01 18:24:56
  */
 @RestController
 @RequestMapping("product/spucomment")
@@ -33,7 +34,7 @@ public class SpuCommentController {
      * 列表
      */
     @RequestMapping("/list")
-    @RequiresPermissions("product:spucomment:list")
+    //@RequiresPermissions("product:spucomment:list")
     public R list(@RequestParam Map<String, Object> params){
         PageUtils page = spuCommentService.queryPage(params);
 
@@ -45,7 +46,7 @@ public class SpuCommentController {
      * 信息
      */
     @RequestMapping("/info/{id}")
-    @RequiresPermissions("product:spucomment:info")
+    //@RequiresPermissions("product:spucomment:info")
     public R info(@PathVariable("id") Long id){
 		SpuCommentEntity spuComment = spuCommentService.getById(id);
 
@@ -56,7 +57,7 @@ public class SpuCommentController {
      * 保存
      */
     @RequestMapping("/save")
-    @RequiresPermissions("product:spucomment:save")
+    //@RequiresPermissions("product:spucomment:save")
     public R save(@RequestBody SpuCommentEntity spuComment){
 		spuCommentService.save(spuComment);
 
@@ -67,7 +68,7 @@ public class SpuCommentController {
      * 修改
      */
     @RequestMapping("/update")
-    @RequiresPermissions("product:spucomment:update")
+    //@RequiresPermissions("product:spucomment:update")
     public R update(@RequestBody SpuCommentEntity spuComment){
 		spuCommentService.updateById(spuComment);
 
@@ -78,7 +79,7 @@ public class SpuCommentController {
      * 删除
      */
     @RequestMapping("/delete")
-    @RequiresPermissions("product:spucomment:delete")
+    //@RequiresPermissions("product:spucomment:delete")
     public R delete(@RequestBody Long[] ids){
 		spuCommentService.removeByIds(Arrays.asList(ids));
 

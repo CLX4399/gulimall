@@ -3,7 +3,6 @@ package com.clx4399.gulimall.product.controller;
 import java.util.Arrays;
 import java.util.Map;
 
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.clx4399.gulimall.product.entity.SkuSaleAttrValueEntity;
 import com.clx4399.gulimall.product.service.SkuSaleAttrValueService;
 import com.clx4399.common.utils.PageUtils;
+import com.clx4399.common.utils.R;
+
 
 
 /**
@@ -21,7 +22,7 @@ import com.clx4399.common.utils.PageUtils;
  *
  * @author clx
  * @email whtclx@gmail.com
- * @date 2020-07-27 00:49:18
+ * @date 2020-08-01 18:24:55
  */
 @RestController
 @RequestMapping("product/skusaleattrvalue")
@@ -33,7 +34,7 @@ public class SkuSaleAttrValueController {
      * 列表
      */
     @RequestMapping("/list")
-    @RequiresPermissions("product:skusaleattrvalue:list")
+    //@RequiresPermissions("product:skusaleattrvalue:list")
     public R list(@RequestParam Map<String, Object> params){
         PageUtils page = skuSaleAttrValueService.queryPage(params);
 
@@ -45,7 +46,7 @@ public class SkuSaleAttrValueController {
      * 信息
      */
     @RequestMapping("/info/{id}")
-    @RequiresPermissions("product:skusaleattrvalue:info")
+    //@RequiresPermissions("product:skusaleattrvalue:info")
     public R info(@PathVariable("id") Long id){
 		SkuSaleAttrValueEntity skuSaleAttrValue = skuSaleAttrValueService.getById(id);
 
@@ -56,7 +57,7 @@ public class SkuSaleAttrValueController {
      * 保存
      */
     @RequestMapping("/save")
-    @RequiresPermissions("product:skusaleattrvalue:save")
+    //@RequiresPermissions("product:skusaleattrvalue:save")
     public R save(@RequestBody SkuSaleAttrValueEntity skuSaleAttrValue){
 		skuSaleAttrValueService.save(skuSaleAttrValue);
 
@@ -67,7 +68,7 @@ public class SkuSaleAttrValueController {
      * 修改
      */
     @RequestMapping("/update")
-    @RequiresPermissions("product:skusaleattrvalue:update")
+    //@RequiresPermissions("product:skusaleattrvalue:update")
     public R update(@RequestBody SkuSaleAttrValueEntity skuSaleAttrValue){
 		skuSaleAttrValueService.updateById(skuSaleAttrValue);
 
@@ -78,7 +79,7 @@ public class SkuSaleAttrValueController {
      * 删除
      */
     @RequestMapping("/delete")
-    @RequiresPermissions("product:skusaleattrvalue:delete")
+    //@RequiresPermissions("product:skusaleattrvalue:delete")
     public R delete(@RequestBody Long[] ids){
 		skuSaleAttrValueService.removeByIds(Arrays.asList(ids));
 
