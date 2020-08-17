@@ -3,7 +3,9 @@ package com.clx4399.gulimall.member.controller;
 import java.util.Arrays;
 import java.util.Map;
 
+import com.clx4399.gulimall.member.feign.CouponTestFeign;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +31,14 @@ import com.clx4399.common.utils.R;
 public class MemberController {
     @Autowired
     private MemberService memberService;
+
+    @Autowired
+    private CouponTestFeign couponTestFeign;
+
+    @RequestMapping("/allCoupons")
+    public R allCoupons(){
+        return couponTestFeign.allList().put("测试获取优惠券","成功!");
+    }
 
     /**
      * 列表
