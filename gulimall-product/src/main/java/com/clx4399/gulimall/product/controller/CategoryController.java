@@ -1,6 +1,7 @@
 package com.clx4399.gulimall.product.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,7 @@ import com.clx4399.common.utils.R;
 @RestController
 @RequestMapping("product/category")
 public class CategoryController {
+
     @Autowired
     private CategoryService categoryService;
 
@@ -36,9 +38,9 @@ public class CategoryController {
     @RequestMapping("/list")
     //@RequiresPermissions("product:category:list")
     public R list(@RequestParam Map<String, Object> params){
-        PageUtils page = categoryService.queryPage(params);
+        List<CategoryEntity> list = categoryService.listWithTree();
 
-        return R.ok().put("page", page);
+        return R.ok().put("page", list);
     }
 
 

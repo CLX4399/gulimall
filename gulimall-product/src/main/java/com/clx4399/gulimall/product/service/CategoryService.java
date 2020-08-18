@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.clx4399.common.utils.PageUtils;
 import com.clx4399.gulimall.product.entity.CategoryEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,5 +17,14 @@ import java.util.Map;
 public interface CategoryService extends IService<CategoryEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    /**
+     * @author CLX
+     * @describe: 查找所有菜单栏目
+     * @date 2020/8/18 9:44
+     * @param
+     * @return java.util.List<com.clx4399.gulimall.product.entity.CategoryEntity>
+     */
+    List<CategoryEntity> listWithTree();
 }
 
