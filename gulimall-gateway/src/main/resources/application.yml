@@ -5,14 +5,18 @@ spring:
         server-addr: 127.0.0.1:8848
     gateway:
       routes:
-        - id: baidu
-          uri: http://www.baidu.com
+        - id: product-route
+          uri: lb://gulimall-product
           predicates:
-          - Query=url,baidu
-        - id: qq
-          uri: http://www.qq.com
+            - Path=/api/product/**
+          filters:
+            - RewritePath=/api/(?<segment>/?.*), /$\{segment}
+        - id: admin-route
+          uri: lb://renren-fast
           predicates:
-          - Query=url,qq
+            - Path=/api/**
+          filters:
+            - RewritePath=/api/(?<segment>/?.*), /renren-fast/$\{segment}
   application:
     name: gulimall-gateway
 server:
