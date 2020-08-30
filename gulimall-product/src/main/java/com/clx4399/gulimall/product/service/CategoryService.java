@@ -26,5 +26,14 @@ public interface CategoryService extends IService<CategoryEntity> {
      * @return java.util.List<com.clx4399.gulimall.product.entity.CategoryEntity>
      */
     List<CategoryEntity> listWithTree();
+
+    /**
+     * @param asList
+     * @return void
+     * @author CLX
+     * @describe: 删除菜单（判断是否符合删除条件）
+     * @date 2020/8/30 16:18
+     */
+    void removeMenuByIds(List<Long> asList);
 }
 

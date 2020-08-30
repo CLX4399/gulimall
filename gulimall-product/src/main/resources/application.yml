@@ -4,6 +4,11 @@ spring:
     password: root
     url: jdbc:mysql://139.224.113.89:3306/gulimall_pms?useUnicode=true&characterEncoding=UTF-8&useSSL=false
     driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      minimum-idle: 3
+      maximum-pool-size: 10
+      max-lifetime: 30000   #不能小于30秒，否则默认回到1800秒
+      connection-test-query: SELECT 1
   cloud:
     nacos:
       discovery:

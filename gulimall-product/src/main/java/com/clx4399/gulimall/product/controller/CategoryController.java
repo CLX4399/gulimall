@@ -1,5 +1,6 @@
 package com.clx4399.gulimall.product.controller;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -83,7 +84,9 @@ public class CategoryController {
     @RequestMapping("/delete")
     //@RequiresPermissions("product:category:delete")
     public R delete(@RequestBody Long[] catIds){
-		categoryService.removeByIds(Arrays.asList(catIds));
+
+        /*检验是否符合删除条件*/
+		categoryService.removeMenuByIds(Arrays.asList(catIds));
 
         return R.ok();
     }
