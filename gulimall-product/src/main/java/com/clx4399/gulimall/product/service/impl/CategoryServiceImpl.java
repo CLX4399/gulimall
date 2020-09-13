@@ -40,6 +40,8 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
                 categoryEntity.getParentCid() == 0).map(item -> {
             item.setChildren(getChildren(item, list));
             return item;
+        }).sorted((enum1,enum2) -> {
+            return ((enum1.getSort() == null ? 0 : enum1.getSort()) - (enum2.getSort() ==null ? 0 : enum2.getSort()));
         }).collect(Collectors.toList());
 
         return treeForList;
@@ -66,6 +68,8 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
                 Objects.equals(categoryEntity.getParentCid(), entity.getCatId())).map(item -> {
             item.setChildren(getChildren(item, list));
             return item;
+        }).sorted((enum1,enum2) -> {
+            return ((enum1.getSort() == null ? 0 : enum1.getSort()) - (enum2.getSort() ==null ? 0 : enum2.getSort()));
         }).collect(Collectors.toList());
         return childrenList;
     }
