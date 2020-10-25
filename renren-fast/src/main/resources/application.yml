@@ -5,7 +5,6 @@ server:
     max-threads: 1000
     min-spare-threads: 30
   port: 8080
-  connection-timeout: 5000ms
   servlet:
     context-path: /renren-fast
 spring:
@@ -40,9 +39,10 @@ spring:
     name: renren-fast
   cloud:
     nacos:
-      discovery:
-        server-addr: 139.224.113.89:8848
-#  resources:
+      server-addr: 139.224.113.89:8848
+#      discovery:
+#        server-addr: 139.224.113.89:8848
+#  resources:        spring.cloud.nacos.server-addr
 #    add-mappings: false
 
 
