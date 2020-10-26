@@ -16,13 +16,8 @@ import java.io.InputStream;
 @SpringBootTest
 class GulimallMemberApplicationTests {
 
-	@Autowired
-	private MemberService memberService;
-
 	@Test
 	void contextLoads() throws FileNotFoundException {
-		InputStream inputStream = new FileInputStream("");
-		memberService.saveOrUpdate(new MemberEntity(),new UpdateWrapper<MemberEntity>().eq("",""));
 	}
 
 }

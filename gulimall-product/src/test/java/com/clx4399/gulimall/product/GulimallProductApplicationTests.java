@@ -2,7 +2,6 @@ package com.clx4399.gulimall.product;
 
 
 import com.aliyun.oss.OSSClient;
-import com.aliyun.oss.model.GetObjectRequest;
 import com.clx4399.gulimall.product.service.BrandService;
 import com.clx4399.gulimall.product.service.CategoryService;
 import org.junit.jupiter.api.Test;
@@ -15,7 +14,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 @SpringBootTest
-class GulimallProductApplicationTests {
+class   GulimallProductApplicationTests {
 
     @Autowired
     private BrandService brandService;
@@ -31,7 +30,7 @@ class GulimallProductApplicationTests {
 
         InputStream inputStream = new FileInputStream("C:\\Users\\WhtCl\\Downloads\\三体智子高清4k动漫壁纸_彼岸图网.jpg");
             // download file to local
-            ossClient.putObject("gulimal-clx4399", "三体智子高清4k动漫壁纸_彼岸图网.jpg", new File("C:\\Users\\WhtCl\\Downloads\\三体智子高清4k动漫壁纸_彼岸图网.jpg"));
+            ossClient.putObject("gulimal-clx4399", "111.jpg", new File("D:\\111.jpg"));
     }
 
     @Test
