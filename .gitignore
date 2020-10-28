@@ -15,6 +15,9 @@ buildNumber.properties
 **/.mvn
 **/target
 **/.iml
+**/gulimall.iml
+**/gulimall.ipr
+**/gulimall.iws
 
 .idea
 **/.gitignore
