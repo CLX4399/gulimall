@@ -39,11 +39,13 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-alicloud-oss</artifactId>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>

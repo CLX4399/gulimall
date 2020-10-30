@@ -11,12 +11,21 @@ spring:
             - Path=/api/product/**
           filters:
             - RewritePath=/api/(?<segment>/?.*), /$\{segment}
+
+        - id: thridparty-route
+          uri: lb://gulimall-thrid-party
+          predicates:
+            - Path=/api/thridparty/**
+          filters:
+            - RewritePath=/api/thridparty/(?<segment>/?.*), /$\{segment}
+
         - id: admin-route
           uri: lb://renren-fast
           predicates:
             - Path=/api/**
           filters:
             - RewritePath=/api/(?<segment>/?.*), /renren-fast/$\{segment}
+
   application:
     name: gulimall-gateway
 server:
