@@ -1,9 +1,15 @@
 package com.clx4399.gulimall.product.controller;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 
+import com.clx4399.common.vaild.AddGroup;
+import com.clx4399.common.vaild.UpdateGroup;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +21,7 @@ import com.clx4399.gulimall.product.service.BrandService;
 import com.clx4399.common.utils.PageUtils;
 import com.clx4399.common.utils.R;
 
+import javax.validation.Valid;
 
 
 /**
@@ -27,6 +34,7 @@ import com.clx4399.common.utils.R;
 @RestController
 @RequestMapping("product/brand")
 public class BrandController {
+
     @Autowired
     private BrandService brandService;
 
@@ -57,11 +65,11 @@ public class BrandController {
      * 保存
      */
     @RequestMapping("/save")
-    //@RequiresPermissions("product:brand:save")
-    public R save(@RequestBody BrandEntity brand){
-		brandService.save(brand);
+    public R save(@Validated(AddGroup.class) @RequestBody  BrandEntity brand){
 
+        brandService.save(brand);
         return R.ok();
+
     }
 
     /**
@@ -69,7 +77,7 @@ public class BrandController {
      */
     @RequestMapping("/update")
     //@RequiresPermissions("product:brand:update")
-    public R update(@RequestBody BrandEntity brand){
+    public R update(@Validated(UpdateGroup.class) @RequestBody BrandEntity brand){
 		brandService.updateById(brand);
 
         return R.ok();
