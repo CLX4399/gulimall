@@ -56,7 +56,7 @@ public class OssPolicyController {
         String callbackUrl = "http://88.88.88.88.:8888";
 
         // 用户上传文件时指定的前缀。
-        String dir = "gulimall-test/";
+        String dir = "gulimall-test";
 
         Map<String, String> respMap = new LinkedHashMap<String, String>();
         try {
