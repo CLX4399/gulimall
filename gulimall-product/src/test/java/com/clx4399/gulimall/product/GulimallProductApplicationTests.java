@@ -3,10 +3,15 @@ package com.clx4399.gulimall.product;
 
 import com.clx4399.gulimall.product.service.BrandService;
 import com.clx4399.gulimall.product.service.CategoryService;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+
+@Slf4j
 @SpringBootTest
 class   GulimallProductApplicationTests {
 
@@ -19,17 +24,9 @@ class   GulimallProductApplicationTests {
     @Test
     void contextLoads() {
 
-       /* BrandEntity brandEntity = new BrandEntity();
-        brandEntity.setBrandId(1L);
-        brandEntity.setDescript("联想笔记本");
-        brandService.updateById(brandEntity);*/
 
-        /*List list = brandService.list(new QueryWrapper<BrandEntity>().eq("brand_id",1L));
-        list.forEach((item)->{
-            System.out.println(item);
-        });*/
-
-        categoryService.listWithTree();
+        Long[] allPath =categoryService.getAllPath(265L);
+        log.info("得出路径为:{}", Arrays.asList(allPath));
 
     }
 

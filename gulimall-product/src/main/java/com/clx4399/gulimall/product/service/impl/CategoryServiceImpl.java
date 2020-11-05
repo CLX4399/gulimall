@@ -1,11 +1,9 @@
 package com.clx4399.gulimall.product.service.impl;
 
+import com.clx4399.gulimall.product.entity.AttrGroupEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collector;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -46,6 +44,26 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
 
         return treeForList;
     }
+
+    @Override
+    public Long[] getAllPath(Long attrGroupId) {
+        List<Long> longs = new ArrayList<>();
+        CategoryEntity categoryEntity = this.getById(attrGroupId);
+        this.recursionAllPath(categoryEntity,longs);
+
+        Collections.reverse(longs);
+
+        return longs.toArray(new Long[longs.size()-1]);
+    }
+
+    private void recursionAllPath(CategoryEntity categoryEntity, List<Long> longs) {
+        longs.add(categoryEntity.getCatId());
+        if (categoryEntity.getParentCid()!=0){
+            CategoryEntity category = this.getById(categoryEntity.getParentCid());
+            recursionAllPath(category,longs);
+        }
+    }
+
 
     @Override
     public void removeMenuByIds(List<Long> asList) {
