@@ -19,9 +19,6 @@ class GulimallThridPartyApplicationTests {
     @Test
     void  testUplaod() throws FileNotFoundException {
 
-        InputStream inputStream = new FileInputStream("C:\\Users\\WhtCl\\Downloads\\三体智子高清4k动漫壁纸_彼岸图网.jpg");
-        // download file to local
-        ossClient.putObject("gulimal-clx4399", "111.jpg", new File("D:\\111.jpg"));
     }
 
 }
