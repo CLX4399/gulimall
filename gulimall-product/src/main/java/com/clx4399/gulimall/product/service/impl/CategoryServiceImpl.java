@@ -1,6 +1,9 @@
 package com.clx4399.gulimall.product.service.impl;
 
 import com.clx4399.gulimall.product.entity.AttrGroupEntity;
+import com.clx4399.gulimall.product.service.CategoryBrandRelationService;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -19,6 +22,9 @@ import com.clx4399.gulimall.product.service.CategoryService;
 
 @Service("categoryService")
 public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity> implements CategoryService {
+
+    @Autowired
+    private CategoryBrandRelationService categoryBrandRelationService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -54,6 +60,14 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         Collections.reverse(longs);
 
         return longs.toArray(new Long[longs.size()-1]);
+    }
+
+    @Override
+    public void updateDetail(CategoryEntity category) {
+        this.updateById(category);
+        if (!StringUtils.isEmpty(category.getName())){
+            categoryBrandRelationService.updateCategory(category.getCatId(),category.getName());
+        }
     }
 
     private void recursionAllPath(CategoryEntity categoryEntity, List<Long> longs) {

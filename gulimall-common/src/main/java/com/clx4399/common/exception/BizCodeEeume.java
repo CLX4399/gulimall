@@ -8,9 +8,9 @@ import org.omg.CORBA.UNKNOWN;
  * */
 public enum BizCodeEeume {
 
-    VAILD_EXCEPTION(10000,"系统未知异常"),
+    VAILD_EXCEPTION(10001,"参数格式校验异常"),
 
-    UNKNOWN_EXCEPTION(10001,"参数格式校验异常");
+    UNKNOWN_EXCEPTION(10000,"系统未知异常");
 
     private int code;
     private String message;

@@ -44,5 +44,7 @@ public interface CategoryService extends IService<CategoryEntity> {
      * @date 2020/11/5 19:18
      */
     Long[] getAllPath(Long attrGroupId);
+
+    void updateDetail(CategoryEntity category);
 }
 
