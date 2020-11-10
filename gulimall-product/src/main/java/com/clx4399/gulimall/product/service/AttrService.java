@@ -3,6 +3,7 @@ package com.clx4399.gulimall.product.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.clx4399.common.utils.PageUtils;
 import com.clx4399.gulimall.product.entity.AttrEntity;
+import com.clx4399.gulimall.product.vo.AttrRespVo;
 import com.clx4399.gulimall.product.vo.AttrVo;
 
 import java.util.Map;
@@ -19,5 +20,9 @@ public interface AttrService extends IService<AttrEntity> {
     PageUtils queryPage(Map<String, Object> params);
 
     void saveAttr(AttrVo attr);
+
+    PageUtils queryAttrBase(Map<String, Object> params, Long catelogId);
+
+    AttrRespVo getAttrInfo(Long attrId);
 }
 

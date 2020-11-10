@@ -3,6 +3,7 @@ package com.clx4399.gulimall.product.controller;
 import java.util.Arrays;
 import java.util.Map;
 
+import com.clx4399.gulimall.product.vo.AttrRespVo;
 import com.clx4399.gulimall.product.vo.AttrVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +32,22 @@ public class AttrController {
     @Autowired
     private AttrService attrService;
 
+
+    /**
+     * /product/attr/base/list/{catelogId}
+     * @param params
+     * @return com.clx4399.common.utils.R
+     * @author CLX
+     * @describe:
+     * @date 2020/11/9 23:18
+     */
+    @RequestMapping("/base/list/{catelogId}")
+    public R attrBaseList(@RequestParam Map<String, Object> params,@PathVariable("catelogId")Long catelogId){
+        PageUtils page = attrService.queryAttrBase(params,catelogId);
+
+        return R.ok().put("page", page);
+    }
+
     /**
      * 列表
      */
@@ -49,7 +66,7 @@ public class AttrController {
     @RequestMapping("/info/{attrId}")
     //@RequiresPermissions("product:attr:info")
     public R info(@PathVariable("attrId") Long attrId){
-		AttrEntity attr = attrService.getById(attrId);
+		AttrRespVo attr = attrService.getAttrInfo(attrId);
 
         return R.ok().put("attr", attr);
     }
