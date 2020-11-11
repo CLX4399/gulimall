@@ -4,13 +4,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import com.clx4399.gulimall.product.entity.AttrEntity;
+import com.clx4399.gulimall.product.service.AttrService;
 import com.clx4399.gulimall.product.service.CategoryService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.clx4399.gulimall.product.entity.AttrGroupEntity;
 import com.clx4399.gulimall.product.service.AttrGroupService;
@@ -34,6 +33,22 @@ public class AttrGroupController {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private AttrService attrService;
+
+    /**
+     * @param
+     * @return com.clx4399.common.utils.R
+     * @author CLX
+     * @describe:
+     * @date 2020/11/11 20:50
+     */
+    @GetMapping("/{attrgroupId}/attr/relation")
+    public R attrGroupRelation(@PathVariable String attrgroupId){
+        List<AttrEntity> list = attrService.getAttrByAttrGroup(attrgroupId);
+        return R.ok().put("data",list);
+    }
 
     /**
      * 列表
