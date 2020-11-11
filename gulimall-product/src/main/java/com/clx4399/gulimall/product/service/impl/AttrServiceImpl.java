@@ -1,5 +1,6 @@
 package com.clx4399.gulimall.product.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.clx4399.gulimall.product.dao.AttrAttrgroupRelationDao;
 import com.clx4399.gulimall.product.dao.AttrGroupDao;
 import com.clx4399.gulimall.product.dao.CategoryDao;
@@ -57,25 +58,28 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
     @Override
     public void saveAttr(AttrVo attr) {
         AttrEntity attrEntity = new AttrEntity();
-        BeanUtils.copyProperties(attr,attrEntity);
+        BeanUtils.copyProperties(attr, attrEntity);
         this.save(attrEntity);
-        AttrAttrgroupRelationEntity attrAttrgroupRelationEntity = new AttrAttrgroupRelationEntity();
-        attrAttrgroupRelationEntity.setAttrId(attrEntity.getAttrId());
-        attrAttrgroupRelationEntity.setAttrGroupId(attr.getAttrGroupId());
-        attrAttrgroupRelationDao.insert(attrAttrgroupRelationEntity);
+        if (attr.getAttrType()==1) {
+            AttrAttrgroupRelationEntity attrAttrgroupRelationEntity = new AttrAttrgroupRelationEntity();
+            attrAttrgroupRelationEntity.setAttrId(attrEntity.getAttrId());
+            attrAttrgroupRelationEntity.setAttrGroupId(attr.getAttrGroupId());
+            attrAttrgroupRelationDao.insert(attrAttrgroupRelationEntity);
+        }
     }
 
     @Override
-    public PageUtils queryAttrBase(Map<String, Object> params, Long catelogId) {
-        QueryWrapper<AttrEntity> queryWrapper = new QueryWrapper<>();
-        if (catelogId!=0){
-            queryWrapper.eq("catelog_id",catelogId);
+    public PageUtils queryAttrBase(Map<String, Object> params, Long catelogId, String type) {
+        QueryWrapper<AttrEntity> queryWrapper = new QueryWrapper<AttrEntity>()
+                .eq("attr_type","base".equals(type)?1:0);
+        if (catelogId != 0) {
+            queryWrapper.eq("catelog_id", catelogId);
         }
 
         String key = (String) params.get("key");
-        if (!StringUtils.isEmpty(key)){
-            queryWrapper.and((wrapper)->{
-                wrapper.eq("attr_id",key).or().like("attr_name",key);
+        if (!StringUtils.isEmpty(key)) {
+            queryWrapper.and((wrapper) -> {
+                wrapper.eq("attr_id", key).or().like("attr_name", key);
             });
         }
 
@@ -114,18 +118,20 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
         AttrEntity attrEntity = this.getById(attrId);
         AttrRespVo attrRespVo = new AttrRespVo();
 
-        BeanUtils.copyProperties(attrEntity,attrRespVo);
+        BeanUtils.copyProperties(attrEntity, attrRespVo);
 
-        AttrAttrgroupRelationEntity attrgroupRelationEntity = attrAttrgroupRelationDao.selectOne(new QueryWrapper<AttrAttrgroupRelationEntity>()
-                .eq("attr_id", attrId));
-        if (attrgroupRelationEntity!=null){
-            AttrGroupEntity attrGroupEntity = attrGroupDao.selectById(attrgroupRelationEntity.getAttrGroupId());
-            attrRespVo.setGroupName(attrGroupEntity.getAttrGroupName());
-            attrRespVo.setAttrGroupId(attrGroupEntity.getAttrGroupId());
+        if (attrEntity.getAttrType()==1) {
+            AttrAttrgroupRelationEntity attrgroupRelationEntity = attrAttrgroupRelationDao.selectOne(new QueryWrapper<AttrAttrgroupRelationEntity>()
+                    .eq("attr_id", attrId));
+            if (attrgroupRelationEntity != null) {
+                AttrGroupEntity attrGroupEntity = attrGroupDao.selectById(attrgroupRelationEntity.getAttrGroupId());
+                attrRespVo.setGroupName(attrGroupEntity.getAttrGroupName());
+                attrRespVo.setAttrGroupId(attrGroupEntity.getAttrGroupId());
+            }
         }
 
         CategoryEntity categoryEntity = categoryDao.selectById(attrEntity.getCatelogId());
-        if (categoryEntity!=null){
+        if (categoryEntity != null) {
             attrRespVo.setCatelogName(categoryEntity.getName());
             Long[] allPath = categoryService.getAllPath(categoryEntity.getCatId());
             attrRespVo.setCatelogPath(allPath);
@@ -133,5 +139,32 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
 
 
         return attrRespVo;
+    }
+
+    @Override
+    public void updateAttr(AttrVo attr) {
+        AttrEntity attrEntity = new AttrEntity();
+
+        BeanUtils.copyProperties(attr, attrEntity);
+
+        this.updateById(attrEntity);
+
+        if (attr.getAttrType()==1) {
+
+            AttrAttrgroupRelationEntity attrAttrgroupRelationEntity = new AttrAttrgroupRelationEntity();
+            attrAttrgroupRelationEntity.setAttrId(attr.getAttrId());
+            attrAttrgroupRelationEntity.setAttrGroupId(attr.getAttrGroupId());
+
+            int count = attrAttrgroupRelationDao.selectCount(new QueryWrapper<AttrAttrgroupRelationEntity>().
+                    eq("attr_id", attr.getAttrId()));
+            if (count > 0) {
+
+                attrAttrgroupRelationDao.update(attrAttrgroupRelationEntity, new UpdateWrapper<AttrAttrgroupRelationEntity>().eq("attr_id", attr.getAttrId()));
+
+            } else {
+                attrAttrgroupRelationDao.insert(attrAttrgroupRelationEntity);
+            }
+        }
+
     }
 }
