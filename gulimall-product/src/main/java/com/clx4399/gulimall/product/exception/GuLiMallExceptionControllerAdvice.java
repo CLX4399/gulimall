@@ -35,6 +35,7 @@ public class GuLiMallExceptionControllerAdvice {
 
     @ExceptionHandler(value = Exception.class)
     public R handlerException(Exception e){
+        e.printStackTrace();
         return R.error(BizCodeEeume.UNKNOWN_EXCEPTION.getCode(),BizCodeEeume.UNKNOWN_EXCEPTION.getMessage());
     }
 

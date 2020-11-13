@@ -5,8 +5,11 @@ import java.util.List;
 import java.util.Map;
 
 import com.clx4399.gulimall.product.entity.AttrEntity;
+import com.clx4399.gulimall.product.service.AttrAttrgroupRelationService;
 import com.clx4399.gulimall.product.service.AttrService;
 import com.clx4399.gulimall.product.service.CategoryService;
+import com.clx4399.gulimall.product.service.impl.AttrGroupServiceImpl;
+import com.clx4399.gulimall.product.vo.AttrRelationAttrGroupVo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -37,11 +40,27 @@ public class AttrGroupController {
     @Autowired
     private AttrService attrService;
 
+    @Autowired
+    private AttrAttrgroupRelationService attrAttrgroupRelationService;
+
+    /**
+     * @param attrGroupVos
+     * @return /product/attrgroup/attr/relation/delete
+     * @author CLX
+     * @describe:
+     * @date 2020/11/11 23:51
+     */
+    @PostMapping("/attr/relation/delete")
+    public R deleteAttrGroup(@RequestBody AttrRelationAttrGroupVo[] attrGroupVos){
+        attrAttrgroupRelationService.deleteAttrRelation(attrGroupVos);
+        return R.ok();
+    }
+
     /**
      * @param
      * @return com.clx4399.common.utils.R
      * @author CLX
-     * @describe:
+     * @describe: 获取分组与属性关联关系
      * @date 2020/11/11 20:50
      */
     @GetMapping("/{attrgroupId}/attr/relation")
