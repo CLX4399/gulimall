@@ -29,5 +29,15 @@ public interface AttrService extends IService<AttrEntity> {
     void updateAttr(AttrVo attr);
 
     List<AttrEntity> getAttrByAttrGroup(String attrgroupId);
+    
+    /**
+     * @param attrgroupId
+     * @param params
+     * @return com.clx4399.common.utils.PageUtils
+     * @author CLX
+     * @describe:  获取属性分组没有关联的其他属性
+     * @date 2020/11/15 22:37
+     */
+    PageUtils getNoAttrByAttrGroup(String attrgroupId, Map<String, Object> params);
 }
 

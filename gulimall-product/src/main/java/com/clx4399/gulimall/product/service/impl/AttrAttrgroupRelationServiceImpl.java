@@ -1,6 +1,7 @@
 package com.clx4399.gulimall.product.service.impl;
 
 import com.clx4399.gulimall.product.vo.AttrRelationAttrGroupVo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -41,6 +42,16 @@ public class AttrAttrgroupRelationServiceImpl extends ServiceImpl<AttrAttrgroupR
             return attrAttrgroupRelationEntity;
         }).collect(Collectors.toList());
         this.baseMapper.batchDeleteAttrRelation(collect);
+    }
+
+    @Override
+    public void save(List<AttrRelationAttrGroupVo> attrGroupVos) {
+        List<AttrAttrgroupRelationEntity> relationEntities = attrGroupVos.stream().map(item -> {
+            AttrAttrgroupRelationEntity attrAttrgroupRelationEntity = new AttrAttrgroupRelationEntity();
+            BeanUtils.copyProperties(item, attrAttrgroupRelationEntity);
+            return attrAttrgroupRelationEntity;
+        }).collect(Collectors.toList());
+        this.saveBatch(relationEntities);
     }
 
 }

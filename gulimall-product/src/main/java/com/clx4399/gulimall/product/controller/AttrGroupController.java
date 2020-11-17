@@ -45,6 +45,19 @@ public class AttrGroupController {
 
     /**
      * @param attrGroupVos
+     * @return com.clx4399.common.utils.R
+     * @author CLX
+     * @describe:
+     * @date 2020/11/17 18:44
+     */
+    @PostMapping("/attr/relation")
+    public R addAttrRelationGroup(@RequestBody List<AttrRelationAttrGroupVo> attrGroupVos){
+        attrAttrgroupRelationService.save(attrGroupVos);
+        return R.ok();
+    }
+
+    /**
+     * @param attrGroupVos
      * @return /product/attrgroup/attr/relation/delete
      * @author CLX
      * @describe:
@@ -54,6 +67,21 @@ public class AttrGroupController {
     public R deleteAttrGroup(@RequestBody AttrRelationAttrGroupVo[] attrGroupVos){
         attrAttrgroupRelationService.deleteAttrRelation(attrGroupVos);
         return R.ok();
+    }
+
+    /**
+     * @param
+     * @return
+     * @author CLX
+     * @describe: 获取属性分组没有关联的其他属性
+     * /product/attrgroup/{attrgroupId}/noattr/relation
+     * @date 2020/11/15 22:35
+     */
+    @GetMapping("/{attrgroupId}/noattr/relation")
+    public R noAttrGroupRelation(@PathVariable String attrgroupId,
+                                 @RequestParam Map<String, Object> params){
+        PageUtils page = attrService.getNoAttrByAttrGroup(attrgroupId,params);
+        return R.ok().put("page",page);
     }
 
     /**

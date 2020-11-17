@@ -5,6 +5,7 @@ import com.clx4399.common.utils.PageUtils;
 import com.clx4399.gulimall.product.entity.AttrAttrgroupRelationEntity;
 import com.clx4399.gulimall.product.vo.AttrRelationAttrGroupVo;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,5 +20,7 @@ public interface AttrAttrgroupRelationService extends IService<AttrAttrgroupRela
     PageUtils queryPage(Map<String, Object> params);
 
     void deleteAttrRelation(AttrRelationAttrGroupVo[] attrGroupVos);
+
+    void save(List<AttrRelationAttrGroupVo> attrGroupVos);
 }
 
