@@ -23,11 +23,6 @@ class   GulimallProductApplicationTests {
 
     @Test
     void contextLoads() {
-
-
-        Long[] allPath =categoryService.getAllPath(265L);
-        log.info("得出路径为:{}", Arrays.asList(allPath));
-
     }
 
 }
