@@ -9,6 +9,7 @@ import com.clx4399.gulimall.product.service.AttrAttrgroupRelationService;
 import com.clx4399.gulimall.product.service.AttrService;
 import com.clx4399.gulimall.product.service.CategoryService;
 import com.clx4399.gulimall.product.service.impl.AttrGroupServiceImpl;
+import com.clx4399.gulimall.product.vo.AttrGroupWithAttrVo;
 import com.clx4399.gulimall.product.vo.AttrRelationAttrGroupVo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,20 @@ public class AttrGroupController {
 
     @Autowired
     private AttrAttrgroupRelationService attrAttrgroupRelationService;
+
+
+    /**
+     * @param catelogId
+     * @return com.clx4399.common.utils.R
+     * @author CLX
+     * @describe: 通过分类id获取对应的分组及其对应属性
+     * @date 2020/11/22 0:29
+     */
+    @GetMapping("/{catelogId}/withattr")
+    public R attrWithGroupByCatelogId(@PathVariable String catelogId){
+        List<AttrGroupWithAttrVo> list = attrGroupService.getAttrWithGroupByCatelogId(catelogId);
+        return R.ok().put("data",list);
+    }
 
     /**
      * @param attrGroupVos

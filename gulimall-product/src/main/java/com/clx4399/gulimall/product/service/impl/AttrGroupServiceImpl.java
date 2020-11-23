@@ -2,12 +2,17 @@ package com.clx4399.gulimall.product.service.impl;
 
 import com.clx4399.gulimall.product.dao.AttrAttrgroupRelationDao;
 import com.clx4399.gulimall.product.entity.AttrEntity;
+import com.clx4399.gulimall.product.service.AttrService;
+import com.clx4399.gulimall.product.vo.AttrGroupWithAttrVo;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -24,6 +29,9 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupDao, AttrGroupEnt
 
     @Autowired
     private AttrAttrgroupRelationDao attrAttrgroupRelationDao;
+
+    @Autowired
+    private AttrService attrService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -55,6 +63,20 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupDao, AttrGroupEnt
             IPage<AttrGroupEntity> page = this.page(new Query<AttrGroupEntity>().getPage(params), queryWrapper);
             return new PageUtils(page);
         }
+    }
+
+    @Override
+    public List<AttrGroupWithAttrVo> getAttrWithGroupByCatelogId(String catelogId) {
+
+        List<AttrGroupEntity> attrGroupEntities = this.baseMapper.selectList(new QueryWrapper<AttrGroupEntity>().eq("catelog_id", catelogId));
+        List<AttrGroupWithAttrVo> collect = attrGroupEntities.stream().map(item -> {
+            AttrGroupWithAttrVo attrGroupWithAttrVo = new AttrGroupWithAttrVo();
+            BeanUtils.copyProperties(item, attrGroupWithAttrVo);
+            List<AttrEntity> attrByAttrGroup = attrService.getAttrByAttrGroup(String.valueOf(item.getAttrGroupId()));
+            attrGroupWithAttrVo.setAttrs(attrByAttrGroup);
+            return attrGroupWithAttrVo;
+        }).collect(Collectors.toList());
+        return collect;
     }
 
 }
