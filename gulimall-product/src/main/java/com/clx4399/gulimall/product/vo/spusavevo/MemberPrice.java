@@ -5,6 +5,8 @@ package com.clx4399.gulimall.product.vo.spusavevo;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 /**
  * Auto-generated: 2020-11-25 21:1:23
  *
@@ -12,9 +14,10 @@ import lombok.Data;
  * @website http://www.json.cn/java2pojo/
  */
 @Data
-public class Images {
+public class MemberPrice {
 
-    private String imgUrl;
-    private int defaultImg;
+    private Long id;
+    private String name;
+    private BigDecimal price;
 
 }
