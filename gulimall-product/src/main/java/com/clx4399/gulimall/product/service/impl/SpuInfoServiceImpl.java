@@ -1,11 +1,10 @@
 package com.clx4399.gulimall.product.service.impl;
 
+import com.clx4399.common.to.SpuBoundTo;
 import com.clx4399.gulimall.product.entity.*;
+import com.clx4399.gulimall.product.feign.CouponFeignServices;
 import com.clx4399.gulimall.product.service.*;
-import com.clx4399.gulimall.product.vo.spusavevo.BaseAttrs;
-import com.clx4399.gulimall.product.vo.spusavevo.Images;
-import com.clx4399.gulimall.product.vo.spusavevo.Skus;
-import com.clx4399.gulimall.product.vo.spusavevo.SpuSaveVo;
+import com.clx4399.gulimall.product.vo.spusavevo.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,6 +48,9 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
 
     @Autowired
     private SkuSaleAttrValueService skuSaleAttrValueService;
+
+    @Autowired
+    private CouponFeignServices couponFeignServices;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -96,6 +98,13 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
         }).collect(Collectors.toList());
         productAttrValueService.saveAttrValueInfos(collect);
 
+        //保存spu积分信息
+        Bounds bounds = spuInfo.getBounds();
+        SpuBoundTo spuBoundTo = new SpuBoundTo();
+        BeanUtils.copyProperties(bounds,spuBoundTo);
+        spuBoundTo.setSpuId(spuInfoEntity.getId());
+        couponFeignServices.saveSpuBounds(spuBoundTo);
+
         //保存spu对应的sku信息
         List<Skus> skus = spuInfo.getSkus();
         if (skus!=null && skus.size()>0){
@@ -135,6 +144,7 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
                     return skuSaleAttrValueEntity;
                 }).collect(Collectors.toList());
                 skuSaleAttrValueService.saveBatch(collect2);
+
 
 
 

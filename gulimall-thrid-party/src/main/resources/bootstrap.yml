@@ -6,11 +6,11 @@ spring:
       server-addr: 139.224.113.89:8848
     alicloud:
       oss:
-        access-key: LTAI4GCsXw7uLhp5rtYrcgBq
-        secret-key: camw3wVZ2LyEaQxmtHMRoK3yVyfXaW
+        access-key: yourkey
+        secret-key: yourkey
         endpoint: oss-cn-guangzhou.aliyuncs.com
-      access-key: LTAI4GCsXw7uLhp5rtYrcgBq
-      secret-key: camw3wVZ2LyEaQxmtHMRoK3yVyfXaW
+      access-key: yourkey
+      secret-key: yourkey
 server:
   port: 16000
 
