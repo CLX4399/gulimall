@@ -19,5 +19,8 @@ buildNumber.properties
 **/gulimall.ipr
 **/gulimall.iws
 
+/gulimall-thrid-party/src/main/resources/bootstrap.yml
+
+
 .idea
 **/.gitignore
