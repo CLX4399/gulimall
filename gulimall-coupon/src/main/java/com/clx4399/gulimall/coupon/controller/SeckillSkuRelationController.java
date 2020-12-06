@@ -3,6 +3,7 @@ package com.clx4399.gulimall.coupon.controller;
 import java.util.Arrays;
 import java.util.Map;
 
+import com.clx4399.common.to.SkuRedution;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
