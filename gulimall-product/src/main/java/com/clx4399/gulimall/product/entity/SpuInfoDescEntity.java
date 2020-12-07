@@ -22,7 +22,6 @@ public class SpuInfoDescEntity implements Serializable {
 	/**
 	 * 商品id
 	 */
-	@TableId
 	private Long spuId;
 	/**
 	 * 商品介绍

@@ -1,6 +1,8 @@
 package com.clx4399.gulimall.product.service.impl;
 
+import com.clx4399.common.to.SkuRedution;
 import com.clx4399.common.to.SpuBoundTo;
+import com.clx4399.common.utils.R;
 import com.clx4399.gulimall.product.entity.*;
 import com.clx4399.gulimall.product.feign.CouponFeignServices;
 import com.clx4399.gulimall.product.service.*;
@@ -64,7 +66,7 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
 
     @Transactional
     @Override
-    public void saveForSpuSvaeVo(SpuSaveVo spuInfo) {
+    public void  saveForSpuSvaeVo(SpuSaveVo spuInfo) {
 
         //保存spu基本信息
         SpuInfoEntity spuInfoEntity = new SpuInfoEntity();
@@ -103,7 +105,10 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
         SpuBoundTo spuBoundTo = new SpuBoundTo();
         BeanUtils.copyProperties(bounds,spuBoundTo);
         spuBoundTo.setSpuId(spuInfoEntity.getId());
-        couponFeignServices.saveSpuBounds(spuBoundTo);
+        R r = couponFeignServices.saveSpuBounds(spuBoundTo);
+        if (r.getCode()!=1){
+            log.error("远程调用保存spu积分信息服务失败！");
+        }
 
         //保存spu对应的sku信息
         List<Skus> skus = spuInfo.getSkus();
@@ -135,7 +140,7 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
                     return skuImagesEntity;
                 }).collect(Collectors.toList());
                 skuImagesService.saveBatch(collect1);
-
+                //TODO 无需保存没有路径的图片信息
                 //保存sku的销售属性信息
                 List<SkuSaleAttrValueEntity> collect2 = item.getAttr().stream().map(saleAttr -> {
                     SkuSaleAttrValueEntity skuSaleAttrValueEntity = new SkuSaleAttrValueEntity();
@@ -145,9 +150,14 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
                 }).collect(Collectors.toList());
                 skuSaleAttrValueService.saveBatch(collect2);
 
-
-
-
+                //sku的销售属性，满减信息
+                SkuRedution skuRedution = new SkuRedution();
+                BeanUtils.copyProperties(item,skuRedution);
+                skuRedution.setSkuId(skuId);
+                R r1 = couponFeignServices.saveSkuRedution(skuRedution);
+                if (r1.getCode()!=1){
+                    log.error("远程调用保存sku的销售属性，满减信息服务失败！");
+                }
 
             });
         }

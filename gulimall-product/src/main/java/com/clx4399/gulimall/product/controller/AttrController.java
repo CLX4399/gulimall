@@ -3,6 +3,8 @@ package com.clx4399.gulimall.product.controller;
 import java.util.Arrays;
 import java.util.Map;
 
+import com.clx4399.common.to.SpuBoundTo;
+import com.clx4399.gulimall.product.feign.CouponFeignServices;
 import com.clx4399.gulimall.product.vo.AttrRespVo;
 import com.clx4399.gulimall.product.vo.AttrVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,15 @@ public class AttrController {
     @Autowired
     private AttrService attrService;
 
+    @Autowired
+    CouponFeignServices services;
+
+
+    @RequestMapping("/test")
+    R test(){
+        R r = services.saveSpuBounds(new SpuBoundTo());
+        return R.ok().put("message",r.getCode());
+    };
 
     /**
      * /product/attr/base/list/{catelogId}
