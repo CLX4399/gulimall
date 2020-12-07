@@ -1,5 +1,6 @@
 package com.clx4399.gulimall.product.service.impl;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -29,6 +30,45 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
     @Override
     public void saveSkuInfo(SkuInfoEntity skuInfoEntity) {
         this.save(skuInfoEntity);
+    }
+
+    @Override
+    public PageUtils queryPageByCondition(Map<String, Object> params) {
+        QueryWrapper<SkuInfoEntity> skuInfoEntityQueryWrapper = new QueryWrapper<>();
+
+        String key = (String) params.get("key");
+        String catelogId = (String) params.get("catelogId");
+        String brandId = (String) params.get("brandId");
+        String min = (String) params.get("min");
+        String max = (String) params.get("max");
+
+        if (StringUtils.isNotBlank(key) && !"0".equalsIgnoreCase(key)){
+            skuInfoEntityQueryWrapper.and(w->{
+                w.eq("sku_id",key).or().like("sku_name",key);
+            });
+        }
+
+        if (StringUtils.isNotBlank(catelogId) && !"0".equalsIgnoreCase(catelogId)){
+            skuInfoEntityQueryWrapper.eq("catalog_id",catelogId);
+        }
+        if (StringUtils.isNotBlank(brandId) && !"0".equalsIgnoreCase(brandId)){
+            skuInfoEntityQueryWrapper.eq("brand_id",brandId);
+        }
+
+        if (StringUtils.isNotBlank(min) && !"0".equalsIgnoreCase(min)){
+            skuInfoEntityQueryWrapper.ge("price",min);
+        }
+
+        if (StringUtils.isNotBlank(max) && !"0".equalsIgnoreCase(max)){
+            skuInfoEntityQueryWrapper.le("price",max);
+        }
+
+        IPage<SkuInfoEntity> page = this.page(
+                new Query<SkuInfoEntity>().getPage(params),
+                skuInfoEntityQueryWrapper
+        );
+
+        return new PageUtils(page);
     }
 
 }
