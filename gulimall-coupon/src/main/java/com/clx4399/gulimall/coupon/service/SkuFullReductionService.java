@@ -18,6 +18,13 @@ public interface SkuFullReductionService extends IService<SkuFullReductionEntity
 
     PageUtils queryPage(Map<String, Object> params);
 
+    /**
+     * @param skuRedution
+     * @return void
+     * @author CLX
+     * @describe: 保存优惠信息和满减信息
+     * @date 2020/12/7 10:17
+     */
     void saveRedution(SkuRedution skuRedution);
 }
 
