@@ -6,8 +6,8 @@
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
-        <el-button v-if="isAuth('ware:umsmemberloginlog:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
-        <el-button v-if="isAuth('ware:umsmemberloginlog:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
+        <el-button v-if="isAuth('ware:wareinfo:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
+        <el-button v-if="isAuth('ware:wareinfo:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
       </el-form-item>
     </el-form>
     <el-table
@@ -29,34 +29,22 @@
         label="id">
       </el-table-column>
       <el-table-column
-        prop="memberId"
+        prop="name"
         header-align="center"
         align="center"
-        label="member_id">
+        label="仓库名">
       </el-table-column>
       <el-table-column
-        prop="createTime"
+        prop="address"
         header-align="center"
         align="center"
-        label="创建时间">
+        label="仓库地址">
       </el-table-column>
       <el-table-column
-        prop="ip"
+        prop="areacode"
         header-align="center"
         align="center"
-        label="ip">
-      </el-table-column>
-      <el-table-column
-        prop="city"
-        header-align="center"
-        align="center"
-        label="city">
-      </el-table-column>
-      <el-table-column
-        prop="loginType"
-        header-align="center"
-        align="center"
-        label="登录类型[1-web，2-app]">
+        label="区域编码">
       </el-table-column>
       <el-table-column
         fixed="right"
@@ -85,7 +73,7 @@
 </template>
 
 <script>
-  import AddOrUpdate from './umsmemberloginlog-add-or-update'
+  import AddOrUpdate from './wareinfo-add-or-update'
   export default {
     data () {
       return {
@@ -112,7 +100,7 @@
       getDataList () {
         this.dataListLoading = true
         this.$http({
-          url: this.$http.adornUrl('/ware/umsmemberloginlog/list'),
+          url: this.$http.adornUrl('/ware/wareinfo/list'),
           method: 'get',
           params: this.$http.adornParams({
             'page': this.pageIndex,
@@ -163,7 +151,7 @@
           type: 'warning'
         }).then(() => {
           this.$http({
-            url: this.$http.adornUrl('/ware/umsmemberloginlog/delete'),
+            url: this.$http.adornUrl('/ware/wareinfo/delete'),
             method: 'post',
             data: this.$http.adornData(ids, false)
           }).then(({data}) => {

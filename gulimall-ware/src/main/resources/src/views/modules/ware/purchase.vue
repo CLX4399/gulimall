@@ -6,8 +6,8 @@
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
-        <el-button v-if="isAuth('ware:umsmember:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
-        <el-button v-if="isAuth('ware:umsmember:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
+        <el-button v-if="isAuth('ware:purchase:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
+        <el-button v-if="isAuth('ware:purchase:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
       </el-form-item>
     </el-form>
     <el-table
@@ -26,109 +26,61 @@
         prop="id"
         header-align="center"
         align="center"
-        label="id">
+        label="采购单id">
       </el-table-column>
       <el-table-column
-        prop="levelId"
+        prop="assigneeId"
         header-align="center"
         align="center"
-        label="会员等级id">
+        label="采购人id">
       </el-table-column>
       <el-table-column
-        prop="username"
+        prop="assigneeName"
         header-align="center"
         align="center"
-        label="用户名">
+        label="采购人名">
       </el-table-column>
       <el-table-column
-        prop="password"
+        prop="phone"
         header-align="center"
         align="center"
-        label="密码">
+        label="联系方式">
       </el-table-column>
       <el-table-column
-        prop="nickname"
+        prop="priority"
         header-align="center"
         align="center"
-        label="昵称">
-      </el-table-column>
-      <el-table-column
-        prop="mobile"
-        header-align="center"
-        align="center"
-        label="手机号码">
-      </el-table-column>
-      <el-table-column
-        prop="email"
-        header-align="center"
-        align="center"
-        label="邮箱">
-      </el-table-column>
-      <el-table-column
-        prop="header"
-        header-align="center"
-        align="center"
-        label="头像">
-      </el-table-column>
-      <el-table-column
-        prop="gender"
-        header-align="center"
-        align="center"
-        label="性别">
-      </el-table-column>
-      <el-table-column
-        prop="birth"
-        header-align="center"
-        align="center"
-        label="生日">
-      </el-table-column>
-      <el-table-column
-        prop="city"
-        header-align="center"
-        align="center"
-        label="所在城市">
-      </el-table-column>
-      <el-table-column
-        prop="job"
-        header-align="center"
-        align="center"
-        label="职业">
-      </el-table-column>
-      <el-table-column
-        prop="sign"
-        header-align="center"
-        align="center"
-        label="个性签名">
-      </el-table-column>
-      <el-table-column
-        prop="sourceType"
-        header-align="center"
-        align="center"
-        label="用户来源">
-      </el-table-column>
-      <el-table-column
-        prop="integration"
-        header-align="center"
-        align="center"
-        label="积分">
-      </el-table-column>
-      <el-table-column
-        prop="growth"
-        header-align="center"
-        align="center"
-        label="成长值">
+        label="优先级">
       </el-table-column>
       <el-table-column
         prop="status"
         header-align="center"
         align="center"
-        label="启用状态">
+        label="状态">
+      </el-table-column>
+      <el-table-column
+        prop="wareId"
+        header-align="center"
+        align="center"
+        label="仓库id">
+      </el-table-column>
+      <el-table-column
+        prop="amount"
+        header-align="center"
+        align="center"
+        label="总金额">
       </el-table-column>
       <el-table-column
         prop="createTime"
         header-align="center"
         align="center"
-        label="注册时间">
+        label="创建日期">
+      </el-table-column>
+      <el-table-column
+        prop="updateTime"
+        header-align="center"
+        align="center"
+        label="更新日期">
       </el-table-column>
       <el-table-column
         fixed="right"
@@ -157,7 +109,7 @@
 </template>
 
 <script>
-  import AddOrUpdate from './umsmember-add-or-update'
+  import AddOrUpdate from './purchase-add-or-update'
   export default {
     data () {
       return {
@@ -184,7 +136,7 @@
       getDataList () {
         this.dataListLoading = true
         this.$http({
-          url: this.$http.adornUrl('/ware/umsmember/list'),
+          url: this.$http.adornUrl('/ware/purchase/list'),
           method: 'get',
           params: this.$http.adornParams({
             'page': this.pageIndex,
@@ -235,7 +187,7 @@
           type: 'warning'
         }).then(() => {
           this.$http({
-            url: this.$http.adornUrl('/ware/umsmember/delete'),
+            url: this.$http.adornUrl('/ware/purchase/delete'),
             method: 'post',
             data: this.$http.adornData(ids, false)
           }).then(({data}) => {

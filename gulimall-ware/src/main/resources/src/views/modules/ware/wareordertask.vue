@@ -6,8 +6,8 @@
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
-        <el-button v-if="isAuth('ware:umsmembercollectspu:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
-        <el-button v-if="isAuth('ware:umsmembercollectspu:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
+        <el-button v-if="isAuth('ware:wareordertask:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
+        <el-button v-if="isAuth('ware:wareordertask:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
       </el-form-item>
     </el-form>
     <el-table
@@ -29,34 +29,82 @@
         label="id">
       </el-table-column>
       <el-table-column
-        prop="memberId"
+        prop="orderId"
         header-align="center"
         align="center"
-        label="会员id">
+        label="order_id">
       </el-table-column>
       <el-table-column
-        prop="spuId"
+        prop="orderSn"
         header-align="center"
         align="center"
-        label="spu_id">
+        label="order_sn">
       </el-table-column>
       <el-table-column
-        prop="spuName"
+        prop="consignee"
         header-align="center"
         align="center"
-        label="spu_name">
+        label="收货人">
       </el-table-column>
       <el-table-column
-        prop="spuImg"
+        prop="consigneeTel"
         header-align="center"
         align="center"
-        label="spu_img">
+        label="收货人电话">
+      </el-table-column>
+      <el-table-column
+        prop="deliveryAddress"
+        header-align="center"
+        align="center"
+        label="配送地址">
+      </el-table-column>
+      <el-table-column
+        prop="orderComment"
+        header-align="center"
+        align="center"
+        label="订单备注">
+      </el-table-column>
+      <el-table-column
+        prop="paymentWay"
+        header-align="center"
+        align="center"
+        label="付款方式【 1:在线付款 2:货到付款】">
+      </el-table-column>
+      <el-table-column
+        prop="taskStatus"
+        header-align="center"
+        align="center"
+        label="任务状态">
+      </el-table-column>
+      <el-table-column
+        prop="orderBody"
+        header-align="center"
+        align="center"
+        label="订单描述">
+      </el-table-column>
+      <el-table-column
+        prop="trackingNo"
+        header-align="center"
+        align="center"
+        label="物流单号">
       </el-table-column>
       <el-table-column
         prop="createTime"
         header-align="center"
         align="center"
         label="create_time">
+      </el-table-column>
+      <el-table-column
+        prop="wareId"
+        header-align="center"
+        align="center"
+        label="仓库id">
+      </el-table-column>
+      <el-table-column
+        prop="taskComment"
+        header-align="center"
+        align="center"
+        label="工作单备注">
       </el-table-column>
       <el-table-column
         fixed="right"
@@ -85,7 +133,7 @@
 </template>
 
 <script>
-  import AddOrUpdate from './umsmembercollectspu-add-or-update'
+  import AddOrUpdate from './wareordertask-add-or-update'
   export default {
     data () {
       return {
@@ -112,7 +160,7 @@
       getDataList () {
         this.dataListLoading = true
         this.$http({
-          url: this.$http.adornUrl('/ware/umsmembercollectspu/list'),
+          url: this.$http.adornUrl('/ware/wareordertask/list'),
           method: 'get',
           params: this.$http.adornParams({
             'page': this.pageIndex,
@@ -163,7 +211,7 @@
           type: 'warning'
         }).then(() => {
           this.$http({
-            url: this.$http.adornUrl('/ware/umsmembercollectspu/delete'),
+            url: this.$http.adornUrl('/ware/wareordertask/delete'),
             method: 'post',
             data: this.$http.adornData(ids, false)
           }).then(({data}) => {

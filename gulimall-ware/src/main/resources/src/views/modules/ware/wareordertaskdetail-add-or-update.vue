@@ -4,17 +4,17 @@
     :close-on-click-modal="false"
     :visible.sync="visible">
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
-    <el-form-item label="subject_id" prop="subjectId">
-      <el-input v-model="dataForm.subjectId" placeholder="subject_id"></el-input>
+    <el-form-item label="sku_id" prop="skuId">
+      <el-input v-model="dataForm.skuId" placeholder="sku_id"></el-input>
     </el-form-item>
-    <el-form-item label="subject_name" prop="subjectName">
-      <el-input v-model="dataForm.subjectName" placeholder="subject_name"></el-input>
+    <el-form-item label="sku_name" prop="skuName">
+      <el-input v-model="dataForm.skuName" placeholder="sku_name"></el-input>
     </el-form-item>
-    <el-form-item label="subject_img" prop="subjectImg">
-      <el-input v-model="dataForm.subjectImg" placeholder="subject_img"></el-input>
+    <el-form-item label="购买个数" prop="skuNum">
+      <el-input v-model="dataForm.skuNum" placeholder="购买个数"></el-input>
     </el-form-item>
-    <el-form-item label="活动url" prop="subjectUrll">
-      <el-input v-model="dataForm.subjectUrll" placeholder="活动url"></el-input>
+    <el-form-item label="工作单id" prop="taskId">
+      <el-input v-model="dataForm.taskId" placeholder="工作单id"></el-input>
     </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -31,23 +31,23 @@
         visible: false,
         dataForm: {
           id: 0,
-          subjectId: '',
-          subjectName: '',
-          subjectImg: '',
-          subjectUrll: ''
+          skuId: '',
+          skuName: '',
+          skuNum: '',
+          taskId: ''
         },
         dataRule: {
-          subjectId: [
-            { required: true, message: 'subject_id不能为空', trigger: 'blur' }
+          skuId: [
+            { required: true, message: 'sku_id不能为空', trigger: 'blur' }
           ],
-          subjectName: [
-            { required: true, message: 'subject_name不能为空', trigger: 'blur' }
+          skuName: [
+            { required: true, message: 'sku_name不能为空', trigger: 'blur' }
           ],
-          subjectImg: [
-            { required: true, message: 'subject_img不能为空', trigger: 'blur' }
+          skuNum: [
+            { required: true, message: '购买个数不能为空', trigger: 'blur' }
           ],
-          subjectUrll: [
-            { required: true, message: '活动url不能为空', trigger: 'blur' }
+          taskId: [
+            { required: true, message: '工作单id不能为空', trigger: 'blur' }
           ]
         }
       }
@@ -60,15 +60,15 @@
           this.$refs['dataForm'].resetFields()
           if (this.dataForm.id) {
             this.$http({
-              url: this.$http.adornUrl(`/ware/umsmembercollectsubject/info/${this.dataForm.id}`),
+              url: this.$http.adornUrl(`/ware/wareordertaskdetail/info/${this.dataForm.id}`),
               method: 'get',
               params: this.$http.adornParams()
             }).then(({data}) => {
               if (data && data.code === 0) {
-                this.dataForm.subjectId = data.umsMemberCollectSubject.subjectId
-                this.dataForm.subjectName = data.umsMemberCollectSubject.subjectName
-                this.dataForm.subjectImg = data.umsMemberCollectSubject.subjectImg
-                this.dataForm.subjectUrll = data.umsMemberCollectSubject.subjectUrll
+                this.dataForm.skuId = data.wareOrderTaskDetail.skuId
+                this.dataForm.skuName = data.wareOrderTaskDetail.skuName
+                this.dataForm.skuNum = data.wareOrderTaskDetail.skuNum
+                this.dataForm.taskId = data.wareOrderTaskDetail.taskId
               }
             })
           }
@@ -79,14 +79,14 @@
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             this.$http({
-              url: this.$http.adornUrl(`/ware/umsmembercollectsubject/${!this.dataForm.id ? 'save' : 'update'}`),
+              url: this.$http.adornUrl(`/ware/wareordertaskdetail/${!this.dataForm.id ? 'save' : 'update'}`),
               method: 'post',
               data: this.$http.adornData({
                 'id': this.dataForm.id || undefined,
-                'subjectId': this.dataForm.subjectId,
-                'subjectName': this.dataForm.subjectName,
-                'subjectImg': this.dataForm.subjectImg,
-                'subjectUrll': this.dataForm.subjectUrll
+                'skuId': this.dataForm.skuId,
+                'skuName': this.dataForm.skuName,
+                'skuNum': this.dataForm.skuNum,
+                'taskId': this.dataForm.taskId
               })
             }).then(({data}) => {
               if (data && data.code === 0) {

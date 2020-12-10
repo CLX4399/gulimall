@@ -6,8 +6,8 @@
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
-        <el-button v-if="isAuth('ware:umsgrowthchangehistory:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
-        <el-button v-if="isAuth('ware:umsgrowthchangehistory:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
+        <el-button v-if="isAuth('ware:wareordertaskdetail:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
+        <el-button v-if="isAuth('ware:wareordertaskdetail:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
       </el-form-item>
     </el-form>
     <el-table
@@ -29,34 +29,28 @@
         label="id">
       </el-table-column>
       <el-table-column
-        prop="memberId"
+        prop="skuId"
         header-align="center"
         align="center"
-        label="member_id">
+        label="sku_id">
       </el-table-column>
       <el-table-column
-        prop="createTime"
+        prop="skuName"
         header-align="center"
         align="center"
-        label="create_time">
+        label="sku_name">
       </el-table-column>
       <el-table-column
-        prop="changeCount"
+        prop="skuNum"
         header-align="center"
         align="center"
-        label="改变的值（正负计数）">
+        label="购买个数">
       </el-table-column>
       <el-table-column
-        prop="note"
+        prop="taskId"
         header-align="center"
         align="center"
-        label="备注">
-      </el-table-column>
-      <el-table-column
-        prop="sourceType"
-        header-align="center"
-        align="center"
-        label="积分来源[0-购物，1-管理员修改]">
+        label="工作单id">
       </el-table-column>
       <el-table-column
         fixed="right"
@@ -85,7 +79,7 @@
 </template>
 
 <script>
-  import AddOrUpdate from './umsgrowthchangehistory-add-or-update'
+  import AddOrUpdate from './wareordertaskdetail-add-or-update'
   export default {
     data () {
       return {
@@ -112,7 +106,7 @@
       getDataList () {
         this.dataListLoading = true
         this.$http({
-          url: this.$http.adornUrl('/ware/umsgrowthchangehistory/list'),
+          url: this.$http.adornUrl('/ware/wareordertaskdetail/list'),
           method: 'get',
           params: this.$http.adornParams({
             'page': this.pageIndex,
@@ -163,7 +157,7 @@
           type: 'warning'
         }).then(() => {
           this.$http({
-            url: this.$http.adornUrl('/ware/umsgrowthchangehistory/delete'),
+            url: this.$http.adornUrl('/ware/wareordertaskdetail/delete'),
             method: 'post',
             data: this.$http.adornData(ids, false)
           }).then(({data}) => {

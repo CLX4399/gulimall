@@ -4,20 +4,20 @@
     :close-on-click-modal="false"
     :visible.sync="visible">
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
-    <el-form-item label="member_id" prop="memberId">
-      <el-input v-model="dataForm.memberId" placeholder="member_id"></el-input>
+    <el-form-item label="sku_id" prop="skuId">
+      <el-input v-model="dataForm.skuId" placeholder="sku_id"></el-input>
     </el-form-item>
-    <el-form-item label="创建时间" prop="createTime">
-      <el-input v-model="dataForm.createTime" placeholder="创建时间"></el-input>
+    <el-form-item label="仓库id" prop="wareId">
+      <el-input v-model="dataForm.wareId" placeholder="仓库id"></el-input>
     </el-form-item>
-    <el-form-item label="ip" prop="ip">
-      <el-input v-model="dataForm.ip" placeholder="ip"></el-input>
+    <el-form-item label="库存数" prop="stock">
+      <el-input v-model="dataForm.stock" placeholder="库存数"></el-input>
     </el-form-item>
-    <el-form-item label="city" prop="city">
-      <el-input v-model="dataForm.city" placeholder="city"></el-input>
+    <el-form-item label="sku_name" prop="skuName">
+      <el-input v-model="dataForm.skuName" placeholder="sku_name"></el-input>
     </el-form-item>
-    <el-form-item label="登录类型[1-web，2-app]" prop="loginType">
-      <el-input v-model="dataForm.loginType" placeholder="登录类型[1-web，2-app]"></el-input>
+    <el-form-item label="锁定库存" prop="stockLocked">
+      <el-input v-model="dataForm.stockLocked" placeholder="锁定库存"></el-input>
     </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -34,27 +34,27 @@
         visible: false,
         dataForm: {
           id: 0,
-          memberId: '',
-          createTime: '',
-          ip: '',
-          city: '',
-          loginType: ''
+          skuId: '',
+          wareId: '',
+          stock: '',
+          skuName: '',
+          stockLocked: ''
         },
         dataRule: {
-          memberId: [
-            { required: true, message: 'member_id不能为空', trigger: 'blur' }
+          skuId: [
+            { required: true, message: 'sku_id不能为空', trigger: 'blur' }
           ],
-          createTime: [
-            { required: true, message: '创建时间不能为空', trigger: 'blur' }
+          wareId: [
+            { required: true, message: '仓库id不能为空', trigger: 'blur' }
           ],
-          ip: [
-            { required: true, message: 'ip不能为空', trigger: 'blur' }
+          stock: [
+            { required: true, message: '库存数不能为空', trigger: 'blur' }
           ],
-          city: [
-            { required: true, message: 'city不能为空', trigger: 'blur' }
+          skuName: [
+            { required: true, message: 'sku_name不能为空', trigger: 'blur' }
           ],
-          loginType: [
-            { required: true, message: '登录类型[1-web，2-app]不能为空', trigger: 'blur' }
+          stockLocked: [
+            { required: true, message: '锁定库存不能为空', trigger: 'blur' }
           ]
         }
       }
@@ -67,16 +67,16 @@
           this.$refs['dataForm'].resetFields()
           if (this.dataForm.id) {
             this.$http({
-              url: this.$http.adornUrl(`/ware/umsmemberloginlog/info/${this.dataForm.id}`),
+              url: this.$http.adornUrl(`/ware/waresku/info/${this.dataForm.id}`),
               method: 'get',
               params: this.$http.adornParams()
             }).then(({data}) => {
               if (data && data.code === 0) {
-                this.dataForm.memberId = data.umsMemberLoginLog.memberId
-                this.dataForm.createTime = data.umsMemberLoginLog.createTime
-                this.dataForm.ip = data.umsMemberLoginLog.ip
-                this.dataForm.city = data.umsMemberLoginLog.city
-                this.dataForm.loginType = data.umsMemberLoginLog.loginType
+                this.dataForm.skuId = data.wareSku.skuId
+                this.dataForm.wareId = data.wareSku.wareId
+                this.dataForm.stock = data.wareSku.stock
+                this.dataForm.skuName = data.wareSku.skuName
+                this.dataForm.stockLocked = data.wareSku.stockLocked
               }
             })
           }
@@ -87,15 +87,15 @@
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             this.$http({
-              url: this.$http.adornUrl(`/ware/umsmemberloginlog/${!this.dataForm.id ? 'save' : 'update'}`),
+              url: this.$http.adornUrl(`/ware/waresku/${!this.dataForm.id ? 'save' : 'update'}`),
               method: 'post',
               data: this.$http.adornData({
                 'id': this.dataForm.id || undefined,
-                'memberId': this.dataForm.memberId,
-                'createTime': this.dataForm.createTime,
-                'ip': this.dataForm.ip,
-                'city': this.dataForm.city,
-                'loginType': this.dataForm.loginType
+                'skuId': this.dataForm.skuId,
+                'wareId': this.dataForm.wareId,
+                'stock': this.dataForm.stock,
+                'skuName': this.dataForm.skuName,
+                'stockLocked': this.dataForm.stockLocked
               })
             }).then(({data}) => {
               if (data && data.code === 0) {

@@ -6,8 +6,8 @@
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
-        <el-button v-if="isAuth('ware:umsmemberstatisticsinfo:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
-        <el-button v-if="isAuth('ware:umsmemberstatisticsinfo:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
+        <el-button v-if="isAuth('ware:waresku:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
+        <el-button v-if="isAuth('ware:waresku:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
       </el-form-item>
     </el-form>
     <el-table
@@ -29,88 +29,34 @@
         label="id">
       </el-table-column>
       <el-table-column
-        prop="memberId"
+        prop="skuId"
         header-align="center"
         align="center"
-        label="会员id">
+        label="sku_id">
       </el-table-column>
       <el-table-column
-        prop="consumeAmount"
+        prop="wareId"
         header-align="center"
         align="center"
-        label="累计消费金额">
+        label="仓库id">
       </el-table-column>
       <el-table-column
-        prop="couponAmount"
+        prop="stock"
         header-align="center"
         align="center"
-        label="累计优惠金额">
+        label="库存数">
       </el-table-column>
       <el-table-column
-        prop="orderCount"
+        prop="skuName"
         header-align="center"
         align="center"
-        label="订单数量">
+        label="sku_name">
       </el-table-column>
       <el-table-column
-        prop="couponCount"
+        prop="stockLocked"
         header-align="center"
         align="center"
-        label="优惠券数量">
-      </el-table-column>
-      <el-table-column
-        prop="commentCount"
-        header-align="center"
-        align="center"
-        label="评价数">
-      </el-table-column>
-      <el-table-column
-        prop="returnOrderCount"
-        header-align="center"
-        align="center"
-        label="退货数量">
-      </el-table-column>
-      <el-table-column
-        prop="loginCount"
-        header-align="center"
-        align="center"
-        label="登录次数">
-      </el-table-column>
-      <el-table-column
-        prop="attendCount"
-        header-align="center"
-        align="center"
-        label="关注数量">
-      </el-table-column>
-      <el-table-column
-        prop="fansCount"
-        header-align="center"
-        align="center"
-        label="粉丝数量">
-      </el-table-column>
-      <el-table-column
-        prop="collectProductCount"
-        header-align="center"
-        align="center"
-        label="收藏的商品数量">
-      </el-table-column>
-      <el-table-column
-        prop="collectSubjectCount"
-        header-align="center"
-        align="center"
-        label="收藏的专题活动数量">
-      </el-table-column>
-      <el-table-column
-        prop="collectCommentCount"
-        header-align="center"
-        align="center"
-        label="收藏的评论数量">
-      </el-table-column>
-      <el-table-column
-        prop="inviteFriendCount"
-        header-align="center"
-        align="center"
-        label="邀请的朋友数量">
+        label="锁定库存">
       </el-table-column>
       <el-table-column
         fixed="right"
@@ -139,7 +85,7 @@
 </template>
 
 <script>
-  import AddOrUpdate from './umsmemberstatisticsinfo-add-or-update'
+  import AddOrUpdate from './waresku-add-or-update'
   export default {
     data () {
       return {
@@ -166,7 +112,7 @@
       getDataList () {
         this.dataListLoading = true
         this.$http({
-          url: this.$http.adornUrl('/ware/umsmemberstatisticsinfo/list'),
+          url: this.$http.adornUrl('/ware/waresku/list'),
           method: 'get',
           params: this.$http.adornParams({
             'page': this.pageIndex,
@@ -217,7 +163,7 @@
           type: 'warning'
         }).then(() => {
           this.$http({
-            url: this.$http.adornUrl('/ware/umsmemberstatisticsinfo/delete'),
+            url: this.$http.adornUrl('/ware/waresku/delete'),
             method: 'post',
             data: this.$http.adornData(ids, false)
           }).then(({data}) => {
