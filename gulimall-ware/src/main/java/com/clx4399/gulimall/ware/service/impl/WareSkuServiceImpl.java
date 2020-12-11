@@ -28,11 +28,6 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         QueryWrapper<WareSkuEntity> queryWrapper = new QueryWrapper<>();
-
-        /**
-         * skuId:
-         * wareId:
-         */
         String skuId = (String) params.get("skuId");
         String wareId = (String) params.get("wareId");
 
