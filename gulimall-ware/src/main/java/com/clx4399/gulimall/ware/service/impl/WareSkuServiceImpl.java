@@ -52,7 +52,7 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
         List<WareSkuEntity> skuEntityList = this.baseMapper.selectList(new QueryWrapper<WareSkuEntity>().eq("sku_id", skuId)
                 .eq("ware_id", wareId));
         if (skuEntityList.size()>0){
-            //更新库存信息123
+            //更新库存信息
             this.baseMapper.updateStock(skuId,wareId,skuNum);
         }else {
             //新增库存信息
