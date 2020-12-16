@@ -18,7 +18,7 @@ public class MongoTableInfoAdaptor {
     /**
      * 查询表信息的时候 mongo只能获得表名 其他只能手动填写
      *
-     * @param names 表名111
+     * @param names 表名
      */
     public static List<Map<String, String>> tableInfo(List<String> names) {
         List<Map<String, String>> result = new ArrayList<>(names.size());
