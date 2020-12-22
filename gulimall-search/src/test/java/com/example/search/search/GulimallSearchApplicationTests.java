@@ -6,13 +6,18 @@ import com.example.search.search.config.GuLiMallElasticsreachConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentType;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 
 @Slf4j
 @SpringBootTest
@@ -22,11 +27,26 @@ class GulimallSearchApplicationTests {
     private RestHighLevelClient restHighLevelClient;
 
     @Test
+    void esSearch() throws IOException {
+
+        SearchRequest searchRequest = new SearchRequest("users");
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(QueryBuilders.matchQuery("name","12312"));
+        searchRequest.source(searchSourceBuilder);
+        SearchResponse search = restHighLevelClient.search(searchRequest, GuLiMallElasticsreachConfig.COMMON_OPTIONS);
+        log.info(search.toString());
+    }
+
+    @Test
     void contextLoads() throws IOException {
 
         IndexRequest indexRequest = new IndexRequest("users");
         indexRequest.id("1");
         MemberPrice user = new MemberPrice();
+        user.setId(11L);
+        user.setName("12312");
+        user.setPrice(new BigDecimal("123123"));
+
         String toJSONString = JSON.toJSONString(user);
         indexRequest.source(toJSONString, XContentType.JSON);
         IndexResponse index = restHighLevelClient.index(indexRequest, GuLiMallElasticsreachConfig.COMMON_OPTIONS);
