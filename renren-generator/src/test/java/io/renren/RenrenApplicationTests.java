@@ -11,6 +11,13 @@ public class RenrenApplicationTests {
 
 	@Test
 	public void contextLoads() {
+		String name = "clx";
+		String name1 = "clx1";
+		String name2 = "clx112321";
+		String school = "小学校";
+		System.out.println(name.hashCode());
+		System.out.println(name1.hashCode());
+		System.out.println(name2.hashCode());
 	}
 
 }
