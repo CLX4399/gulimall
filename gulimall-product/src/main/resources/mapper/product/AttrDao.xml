@@ -15,6 +15,9 @@
         <result property="catelogId" column="catelog_id"/>
         <result property="showDesc" column="show_desc"/>
     </resultMap>
+    <select id="selectSearchAttrIds" resultType="java.lang.Long">
+        SELECT a.attr_id FROM `pms_attr` a WHERE attr_type=1 and attr_id in(#{productAttrIdLists})
+    </select>
 
 
 </mapper>

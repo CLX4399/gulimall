@@ -1,20 +1,15 @@
 package com.clx4399.gulimall.product.controller;
 
-import java.util.Arrays;
-import java.util.Map;
-
-import com.clx4399.gulimall.product.vo.spusavevo.SpuSaveVo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.clx4399.gulimall.product.entity.SpuInfoEntity;
-import com.clx4399.gulimall.product.service.SpuInfoService;
 import com.clx4399.common.utils.PageUtils;
 import com.clx4399.common.utils.R;
+import com.clx4399.gulimall.product.entity.SpuInfoEntity;
+import com.clx4399.gulimall.product.service.SpuInfoService;
+import com.clx4399.gulimall.product.vo.spusavevo.SpuSaveVo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
+import java.util.Map;
 
 
 
@@ -30,6 +25,14 @@ import com.clx4399.common.utils.R;
 public class SpuInfoController {
     @Autowired
     private SpuInfoService spuInfoService;
+
+    @GetMapping("/spuup/{spuid}")
+    public R getSkuInfoBySkuId(@PathVariable("spuid") Long spuId){
+
+        SpuInfoEntity entity = spuInfoService.getSpuInfoBySkuId(spuId);
+        return R.ok().setData(entity);
+    }
+
 
     /**
      * 列表
@@ -60,7 +63,7 @@ public class SpuInfoController {
     @RequestMapping("/save")
     //@RequiresPermissions("product:spuinfo:save")
     public R save(@RequestBody SpuSaveVo spuInfo){
-		spuInfoService.saveForSpuSvaeVo(spuInfo);
+		spuInfoService.saveForSpuSaveVo(spuInfo);
 
         return R.ok();
     }

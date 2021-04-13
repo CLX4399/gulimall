@@ -2,7 +2,7 @@ spring:
   datasource:
     username: root
     password: root
-    url: jdbc:mysql://localhost:7878/gulimall_pms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:7878/gulimall_pms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       minimum-idle: 3
@@ -12,11 +12,15 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 139.224.113.89:8848
+        server-addr: 127.0.0.1:8848
+      config:
+        timeout: 30000
   application:
     name: gulimall-product
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
+  thymeleaf:
+    cache: false
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**/*.xml
   global-config:

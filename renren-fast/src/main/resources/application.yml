@@ -4,7 +4,7 @@ server:
     uri-encoding: UTF-8
     max-threads: 1000
     min-spare-threads: 30
-  port: 8080
+  port: 8087
   servlet:
     context-path: /renren-fast
 spring:
@@ -39,7 +39,7 @@ spring:
     name: renren-fast
   cloud:
     nacos:
-      server-addr: 139.224.113.89:8848
+      server-addr: 127.0.0.1:8848
 #      discovery:
 #        server-addr: 139.224.113.89:8848
 #  resources:        spring.cloud.nacos.server-addr

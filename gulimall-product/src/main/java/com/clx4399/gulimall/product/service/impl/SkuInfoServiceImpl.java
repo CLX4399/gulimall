@@ -1,17 +1,18 @@
 package com.clx4399.gulimall.product.service.impl;
 
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Service;
-import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.clx4399.common.utils.PageUtils;
 import com.clx4399.common.utils.Query;
-
 import com.clx4399.gulimall.product.dao.SkuInfoDao;
 import com.clx4399.gulimall.product.entity.SkuInfoEntity;
 import com.clx4399.gulimall.product.service.SkuInfoService;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
 
 
 @Service("skuInfoService")
@@ -69,6 +70,12 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
         );
 
         return new PageUtils(page);
+    }
+
+    @Override
+    public List<SkuInfoEntity> getSkuBySpuId(Long skuId) {
+        List<SkuInfoEntity> infoEntityList = baseMapper.selectList(new QueryWrapper<SkuInfoEntity>().eq("spu_id", skuId));
+        return infoEntityList;
     }
 
 }

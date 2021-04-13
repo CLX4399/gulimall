@@ -1,19 +1,16 @@
 package com.clx4399.gulimall.ware.controller;
 
-import java.util.Arrays;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.clx4399.gulimall.ware.entity.WareSkuEntity;
-import com.clx4399.gulimall.ware.service.WareSkuService;
 import com.clx4399.common.utils.PageUtils;
 import com.clx4399.common.utils.R;
+import com.clx4399.gulimall.ware.entity.WareSkuEntity;
+import com.clx4399.gulimall.ware.service.WareSkuService;
+import com.clx4399.gulimall.ware.vo.SkuHasStockVo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 
 
@@ -29,6 +26,19 @@ import com.clx4399.common.utils.R;
 public class WareSkuController {
     @Autowired
     private WareSkuService wareSkuService;
+
+    // sku的规格参数相同，因此我们要将查询规格参数提前，只查询一次
+    /**
+     * 查询sku是否有库存
+     * 返回skuId 和 stock库存量
+     */
+    @PostMapping("/hasStock")
+    public R getSkuHasStock(@RequestBody List<Long> SkuIds){
+        List<SkuHasStockVo> vos = wareSkuService.getSkuHasStock(SkuIds);
+        return R.ok().setData(vos);
+    }
+
+
 
     /**
      * 列表

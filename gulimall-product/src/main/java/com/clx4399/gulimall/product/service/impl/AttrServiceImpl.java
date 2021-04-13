@@ -1,13 +1,21 @@
 package com.clx4399.gulimall.product.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.clx4399.common.constant.ProductConstant;
+import com.clx4399.common.utils.PageUtils;
+import com.clx4399.common.utils.Query;
 import com.clx4399.gulimall.product.dao.AttrAttrgroupRelationDao;
+import com.clx4399.gulimall.product.dao.AttrDao;
 import com.clx4399.gulimall.product.dao.AttrGroupDao;
 import com.clx4399.gulimall.product.dao.CategoryDao;
 import com.clx4399.gulimall.product.entity.AttrAttrgroupRelationEntity;
+import com.clx4399.gulimall.product.entity.AttrEntity;
 import com.clx4399.gulimall.product.entity.AttrGroupEntity;
 import com.clx4399.gulimall.product.entity.CategoryEntity;
+import com.clx4399.gulimall.product.service.AttrService;
 import com.clx4399.gulimall.product.service.CategoryService;
 import com.clx4399.gulimall.product.vo.AttrRespVo;
 import com.clx4399.gulimall.product.vo.AttrVo;
@@ -19,16 +27,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.clx4399.common.utils.PageUtils;
-import com.clx4399.common.utils.Query;
-
-import com.clx4399.gulimall.product.dao.AttrDao;
-import com.clx4399.gulimall.product.entity.AttrEntity;
-import com.clx4399.gulimall.product.service.AttrService;
 
 
 @Service("attrService")
@@ -215,5 +213,11 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
         IPage<AttrEntity> page = this.page(new Query<AttrEntity>().getPage(params), wrapper);
         PageUtils pageUtils = new PageUtils(page);
         return pageUtils;
+    }
+
+    @Override
+    public List<Long> selectSearchAttrIds(List<Long> productAttrIdLists) {
+        List<Long> longs =  baseMapper.selectSearchAttrIds(productAttrIdLists);
+        return longs;
     }
 }

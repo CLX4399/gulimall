@@ -3,4 +3,4 @@ spring:
     name: gulimall-ware
   cloud:
     nacos:
-      server-addr: 139.224.113.89:8848
+      server-addr: 127.0.0.1:8848

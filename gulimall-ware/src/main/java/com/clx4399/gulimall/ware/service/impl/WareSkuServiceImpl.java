@@ -1,22 +1,23 @@
 package com.clx4399.gulimall.ware.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.clx4399.common.utils.PageUtils;
+import com.clx4399.common.utils.Query;
 import com.clx4399.common.utils.R;
+import com.clx4399.gulimall.ware.dao.WareSkuDao;
+import com.clx4399.gulimall.ware.entity.WareSkuEntity;
 import com.clx4399.gulimall.ware.feign.ProductFeign;
+import com.clx4399.gulimall.ware.service.WareSkuService;
+import com.clx4399.gulimall.ware.vo.SkuHasStockVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.clx4399.common.utils.PageUtils;
-import com.clx4399.common.utils.Query;
-
-import com.clx4399.gulimall.ware.dao.WareSkuDao;
-import com.clx4399.gulimall.ware.entity.WareSkuEntity;
-import com.clx4399.gulimall.ware.service.WareSkuService;
+import java.util.stream.Collectors;
 
 
 @Service("wareSkuService")
@@ -72,6 +73,18 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
 
             this.save(wareSkuEntity);
         }
+    }
+
+    @Override
+    public List<SkuHasStockVo> getSkuHasStock(List<Long> skuIds) {
+        List<SkuHasStockVo> collect = skuIds.stream().map(item -> {
+            SkuHasStockVo skuHasStockVo = new SkuHasStockVo();
+            Long stock = baseMapper.getStock(item);
+            skuHasStockVo.setSkuId(item);
+            skuHasStockVo.setStock(stock);
+            return skuHasStockVo;
+        }).collect(Collectors.toList());
+        return collect;
     }
 
 }

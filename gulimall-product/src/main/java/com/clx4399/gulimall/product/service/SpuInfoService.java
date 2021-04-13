@@ -18,7 +18,7 @@ public interface SpuInfoService extends IService<SpuInfoEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
 
-    void saveForSpuSvaeVo(SpuSaveVo spuInfo);
+    void saveForSpuSaveVo(SpuSaveVo spuInfo);
 
     void saveSpuInfo(SpuInfoEntity spuInfoEntity);
 
@@ -31,5 +31,13 @@ public interface SpuInfoService extends IService<SpuInfoEntity> {
      */
     PageUtils queryPageBySpu(Map<String, Object> params);
 
+    /**
+     * @param skuId
+     * @return com.clx4399.gulimall.product.entity.SpuInfoEntity
+     * @author CLX
+     * @describe: 通过skuid上架商品
+     * @date 2021/4/13 19:36
+     */
+    SpuInfoEntity getSpuInfoBySkuId(Long skuId);
 }
 

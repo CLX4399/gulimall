@@ -29,7 +29,7 @@ public interface AttrService extends IService<AttrEntity> {
     void updateAttr(AttrVo attr);
 
     List<AttrEntity> getAttrByAttrGroup(String attrgroupId);
-    
+
     /**
      * @param attrgroupId
      * @param params
@@ -39,5 +39,14 @@ public interface AttrService extends IService<AttrEntity> {
      * @date 2020/11/15 22:37
      */
     PageUtils getNoAttrByAttrGroup(String attrgroupId, Map<String, Object> params);
+
+    /**
+     * @param productAttrIdLists
+     * @return java.util.List<java.lang.Long>
+     * @author CLX
+     * @describe: 获取
+     * @date 2021/4/13 20:55
+     */
+    List<Long> selectSearchAttrIds(List<Long> productAttrIdLists);
 }
 

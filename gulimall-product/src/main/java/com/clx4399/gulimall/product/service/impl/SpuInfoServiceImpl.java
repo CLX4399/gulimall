@@ -1,8 +1,15 @@
 package com.clx4399.gulimall.product.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.clx4399.common.to.SkuEsModel;
 import com.clx4399.common.to.SkuRedution;
 import com.clx4399.common.to.SpuBoundTo;
+import com.clx4399.common.utils.PageUtils;
+import com.clx4399.common.utils.Query;
 import com.clx4399.common.utils.R;
+import com.clx4399.gulimall.product.dao.SpuInfoDao;
 import com.clx4399.gulimall.product.entity.*;
 import com.clx4399.gulimall.product.feign.CouponFeignServices;
 import com.clx4399.gulimall.product.service.*;
@@ -11,22 +18,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.PrimitiveIterator;
+import java.util.*;
 import java.util.stream.Collectors;
-
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.clx4399.common.utils.PageUtils;
-import com.clx4399.common.utils.Query;
-
-import com.clx4399.gulimall.product.dao.SpuInfoDao;
-import org.springframework.transaction.annotation.Transactional;
 
 
 @Service("spuInfoService")
@@ -68,7 +64,7 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
 
     @Transactional
     @Override
-    public void  saveForSpuSvaeVo(SpuSaveVo spuInfo) {
+    public void  saveForSpuSaveVo(SpuSaveVo spuInfo) {
 
         //保存spu基本信息
         SpuInfoEntity spuInfoEntity = new SpuInfoEntity();
@@ -198,6 +194,34 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
         IPage<SpuInfoEntity> page = this.page(new Query<SpuInfoEntity>().getPage(params),
                 spuInfoEntityQueryWrapper);
         return new PageUtils(page);
+    }
+
+    @Override
+    public SpuInfoEntity getSpuInfoBySkuId(Long spuId) {
+
+        /*获取相对应sku信息*/
+        List<SkuInfoEntity> infoEntityList = skuInfoService.getSkuBySpuId(spuId);
+
+        /*获取相对应商品属性信息*/
+        List<ProductAttrValueEntity> attrValueEntities = productAttrValueService.list(new QueryWrapper<ProductAttrValueEntity>().eq("spu_id", spuId));
+        List<Long> ProductAttrIdLists = attrValueEntities.stream().map(item -> item.getAttrId()).collect(Collectors.toList());
+        List<Long> attrIds = attrService.selectSearchAttrIds(ProductAttrIdLists);
+        Set attrIdsSet = new HashSet(attrIds);
+        List<SkuEsModel.Attr> attrList = attrValueEntities.stream().filter(i -> {
+            return attrIdsSet.contains(i.getAttrId());
+        }).map(item -> {
+            SkuEsModel.Attr attr = new SkuEsModel.Attr();
+            BeanUtils.copyProperties(item, attr);
+            return attr;
+        }).collect(Collectors.toList());
+
+        /*校验商品是否有库存*/
+        Map<Long, Boolean> stockMap = new HashMap<>();
+        List<Long> collectId = infoEntityList.stream().map(SkuInfoEntity::getSkuId).collect(Collectors.toList());
+
+
+
+        return null;
     }
 
 }

@@ -2,7 +2,9 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 139.224.113.89:8848
+        server-addr: 127.0.0.1:8848
+      config:
+        timeout: 30000
     gateway:
       routes:
         - id: product-route
@@ -43,4 +45,4 @@ spring:
   application:
     name: gulimall-gateway
 server:
-  port: 88
+  port: 8800

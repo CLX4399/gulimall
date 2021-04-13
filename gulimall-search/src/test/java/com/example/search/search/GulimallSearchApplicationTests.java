@@ -11,6 +11,9 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
+import org.elasticsearch.search.aggregations.metrics.AvgAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +32,9 @@ class GulimallSearchApplicationTests {
     @Test
     void esSearch() throws IOException {
 
-        SearchRequest searchRequest = new SearchRequest("users");
+        SearchRequest searchRequest = new SearchRequest("newbank");
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(QueryBuilders.matchQuery("name","12312"));
+        searchSourceBuilder.query(QueryBuilders.matchQuery("address","Mill"));
         searchRequest.source(searchSourceBuilder);
         SearchResponse search = restHighLevelClient.search(searchRequest, GuLiMallElasticsreachConfig.COMMON_OPTIONS);
         log.info(search.toString());
@@ -51,6 +54,32 @@ class GulimallSearchApplicationTests {
         indexRequest.source(toJSONString, XContentType.JSON);
         IndexResponse index = restHighLevelClient.index(indexRequest, GuLiMallElasticsreachConfig.COMMON_OPTIONS);
         log.info(index.toString());
+    }
+
+    @Test
+    void find() throws IOException {
+
+        SearchRequest searchRequest = new SearchRequest();
+        searchRequest.indices("bank");
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+
+        searchSourceBuilder.query(QueryBuilders.matchQuery("address","mill"));
+
+        TermsAggregationBuilder aggreAge = AggregationBuilders.terms("agg1").field("age").size(10);
+
+        searchSourceBuilder.aggregation(aggreAge);
+
+        AvgAggregationBuilder aggBalance = AggregationBuilders.avg("agg2").field("balance");
+
+        searchSourceBuilder.aggregation(aggBalance);
+
+        searchRequest.source(searchSourceBuilder);
+
+        log.info("检索条件：{}",searchSourceBuilder.toString());
+
+        SearchResponse search = restHighLevelClient.search(searchRequest, GuLiMallElasticsreachConfig.COMMON_OPTIONS);
+
+        log.info("查询结果：{}",search.toString());
     }
 
 }
