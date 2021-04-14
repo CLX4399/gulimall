@@ -38,6 +38,6 @@ public interface SpuInfoService extends IService<SpuInfoEntity> {
      * @describe: 通过skuid上架商品
      * @date 2021/4/13 19:36
      */
-    SpuInfoEntity getSpuInfoBySkuId(Long skuId);
+    void getSpuInfoBySkuId(Long skuId);
 }
 

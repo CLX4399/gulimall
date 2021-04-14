@@ -1,11 +1,10 @@
 package com.clx4399.gulimall.product.exception;
 
-import com.clx4399.common.exception.BizCodeEeume;
+import com.clx4399.common.exception.BizCodeEnum;
 import com.clx4399.common.utils.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -30,13 +29,13 @@ public class GuLiMallExceptionControllerAdvice {
         bindingResult.getFieldErrors().forEach(fieldError -> {
             errorMap.put(fieldError.getField(),fieldError.getDefaultMessage());
         });
-        return R.error(BizCodeEeume.VAILD_EXCEPTION.getCode(),BizCodeEeume.VAILD_EXCEPTION.getMessage()).put("data",errorMap);
+        return R.error(BizCodeEnum.VAILD_EXCEPTION.getCode(),BizCodeEnum.VAILD_EXCEPTION.getMessage()).put("data",errorMap);
     }
 
     @ExceptionHandler(value = Exception.class)
     public R handlerException(Exception e){
         e.printStackTrace();
-        return R.error(BizCodeEeume.UNKNOWN_EXCEPTION.getCode(),BizCodeEeume.UNKNOWN_EXCEPTION.getMessage());
+        return R.error(BizCodeEnum.UNKNOWN_EXCEPTION.getCode(),BizCodeEnum.UNKNOWN_EXCEPTION.getMessage());
     }
 
 }

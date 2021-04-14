@@ -13,5 +13,5 @@ public class SkuHasStockVo {
 
     private Long skuId;
 
-    private Long stock;
+    private Boolean stock;
 }
