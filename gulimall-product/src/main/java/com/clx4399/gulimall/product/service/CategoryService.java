@@ -3,6 +3,7 @@ package com.clx4399.gulimall.product.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.clx4399.common.utils.PageUtils;
 import com.clx4399.gulimall.product.entity.CategoryEntity;
+import com.clx4399.gulimall.product.vo.Catelog2Vo;
 
 import java.util.List;
 import java.util.Map;
@@ -46,5 +47,23 @@ public interface CategoryService extends IService<CategoryEntity> {
     Long[] getAllPath(Long attrGroupId);
 
     void updateDetail(CategoryEntity category);
+
+    /**
+     * @param
+     * @return java.util.List<com.clx4399.gulimall.product.entity.CategoryEntity>
+     * @author CLX
+     * @describe: 获取一级分类
+     * @date 2021/4/14 20:51
+     */
+    List<CategoryEntity> getLevel1Categroies(int level);
+
+    /**
+     * @param
+     * @return java.util.Map<java.lang.String,java.util.List<com.clx4399.gulimall.product.vo.Catelog2Vo>>
+     * @author CLX
+     * @describe: 获取首页二三级信息
+     * @date 2021/4/15 21:06
+     */
+    Map<String, List<Catelog2Vo>> getCateLogLevel2();
 }
 

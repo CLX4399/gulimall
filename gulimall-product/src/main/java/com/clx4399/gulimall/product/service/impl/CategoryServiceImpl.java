@@ -1,23 +1,22 @@
 package com.clx4399.gulimall.product.service.impl;
 
-import com.clx4399.gulimall.product.entity.AttrGroupEntity;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.clx4399.common.constant.ProductConstant;
+import com.clx4399.common.utils.PageUtils;
+import com.clx4399.common.utils.Query;
+import com.clx4399.gulimall.product.dao.CategoryDao;
+import com.clx4399.gulimall.product.entity.CategoryEntity;
 import com.clx4399.gulimall.product.service.CategoryBrandRelationService;
+import com.clx4399.gulimall.product.service.CategoryService;
+import com.clx4399.gulimall.product.vo.Catelog2Vo;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
-
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.clx4399.common.utils.PageUtils;
-import com.clx4399.common.utils.Query;
-
-import com.clx4399.gulimall.product.dao.CategoryDao;
-import com.clx4399.gulimall.product.entity.CategoryEntity;
-import com.clx4399.gulimall.product.service.CategoryService;
 
 
 @Service("categoryService")
@@ -68,6 +67,25 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         if (!StringUtils.isEmpty(category.getName())){
             categoryBrandRelationService.updateCategory(category.getCatId(),category.getName());
         }
+    }
+
+    @Override
+    public List<CategoryEntity> getLevel1Categroies(int level) {
+        List<CategoryEntity> list = baseMapper.selectList(new QueryWrapper<CategoryEntity>()
+                .eq("cat_level", level).orderByAsc("cat_id"));
+        return list;
+    }
+
+    @Override
+    public Map<String, List<Catelog2Vo>> getCateLogLevel2() {
+        /*获取一级分类*/
+        List<CategoryEntity> level1 = getLevel1Categroies(ProductConstant.ProductCatelogLevelEnum.ONE.getCode());
+
+        /*获取二级分类*/
+        level1.stream().collect(Collectors.toMap(k->k.getCatId().toString(),v->{
+            getLevel1Categroies(ProductConstant.ProductCatelogLevelEnum.TWO.getCode());
+        }));
+        return null;
     }
 
     private void recursionAllPath(CategoryEntity categoryEntity, List<Long> longs) {

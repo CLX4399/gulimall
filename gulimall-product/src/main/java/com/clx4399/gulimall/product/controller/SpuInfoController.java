@@ -33,7 +33,6 @@ public class SpuInfoController {
         return R.ok();
     }
 
-
     /**
      * 列表
      */
