@@ -4,21 +4,18 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 /**
  * @author WhtCl
  * @program: gulimall
- * @description: 二级分类vo
- * @date 2021-04-15 20:59:31
+ * @description: 三级分类vo
+ * @date 2021-04-16 09:29:11
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Catelog2Vo {
+public class Catalog3Vo{
 
-    private String catalog1Id;
-    private List<Catalog3Vo> catalog3List;
+    private String catalog2Id;
     private String id;
     private String name;
 

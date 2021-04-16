@@ -10,6 +10,7 @@ import com.clx4399.gulimall.product.dao.CategoryDao;
 import com.clx4399.gulimall.product.entity.CategoryEntity;
 import com.clx4399.gulimall.product.service.CategoryBrandRelationService;
 import com.clx4399.gulimall.product.service.CategoryService;
+import com.clx4399.gulimall.product.vo.Catalog3Vo;
 import com.clx4399.gulimall.product.vo.Catelog2Vo;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,10 +83,24 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         List<CategoryEntity> level1 = getLevel1Categroies(ProductConstant.ProductCatelogLevelEnum.ONE.getCode());
 
         /*获取二级分类*/
-        level1.stream().collect(Collectors.toMap(k->k.getCatId().toString(),v->{
-            getLevel1Categroies(ProductConstant.ProductCatelogLevelEnum.TWO.getCode());
+        Map<String, List<Catelog2Vo>> listMap = level1.stream().collect(Collectors.toMap(k -> k.getCatId().toString(), v -> {
+            List<CategoryEntity> categoryL2 = baseMapper.selectList(new QueryWrapper<CategoryEntity>().eq("parent_cid", v.getCatId()));
+            if (!categoryL2.isEmpty()) {
+                List<Catelog2Vo> collect = categoryL2.stream().map(item -> {
+                    List<CategoryEntity> datalogL3 = baseMapper.selectList(new QueryWrapper<CategoryEntity>().eq("parent_cid", item.getCatId()));
+                    List<Catalog3Vo> catalog3Vos = datalogL3.stream().map(data -> {
+                        Catalog3Vo catalog3Vo = new Catalog3Vo(item.getCatId().toString(), data.getCatId().toString(), data.getName());
+                        return catalog3Vo;
+                    }).collect(Collectors.toList());
+                    Catelog2Vo catelog2Vo = new Catelog2Vo(v.getCatId().toString(), catalog3Vos, item.getCatId().toString(), item.getName());
+                    return catelog2Vo;
+                }).collect(Collectors.toList());
+                return collect;
+            }
+            return null;
         }));
-        return null;
+
+        return listMap;
     }
 
     private void recursionAllPath(CategoryEntity categoryEntity, List<Long> longs) {
