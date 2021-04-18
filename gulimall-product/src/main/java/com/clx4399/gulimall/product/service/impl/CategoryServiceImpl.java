@@ -1,9 +1,10 @@
 package com.clx4399.gulimall.product.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.clx4399.common.constant.ProductConstant;
 import com.clx4399.common.utils.PageUtils;
 import com.clx4399.common.utils.Query;
 import com.clx4399.gulimall.product.dao.CategoryDao;
@@ -12,19 +13,24 @@ import com.clx4399.gulimall.product.service.CategoryBrandRelationService;
 import com.clx4399.gulimall.product.service.CategoryService;
 import com.clx4399.gulimall.product.vo.Catalog3Vo;
 import com.clx4399.gulimall.product.vo.Catelog2Vo;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-
+@Slf4j
 @Service("categoryService")
 public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity> implements CategoryService {
 
     @Autowired
     private CategoryBrandRelationService categoryBrandRelationService;
+
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -79,28 +85,63 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
 
     @Override
     public Map<String, List<Catelog2Vo>> getCateLogLevel2() {
-        /*获取一级分类*/
-        List<CategoryEntity> level1 = getLevel1Categroies(ProductConstant.ProductCatelogLevelEnum.ONE.getCode());
 
-        /*获取二级分类*/
-        Map<String, List<Catelog2Vo>> listMap = level1.stream().collect(Collectors.toMap(k -> k.getCatId().toString(), v -> {
-            List<CategoryEntity> categoryL2 = baseMapper.selectList(new QueryWrapper<CategoryEntity>().eq("parent_cid", v.getCatId()));
-            if (!categoryL2.isEmpty()) {
-                List<Catelog2Vo> collect = categoryL2.stream().map(item -> {
-                    List<CategoryEntity> datalogL3 = baseMapper.selectList(new QueryWrapper<CategoryEntity>().eq("parent_cid", item.getCatId()));
-                    List<Catalog3Vo> catalog3Vos = datalogL3.stream().map(data -> {
-                        Catalog3Vo catalog3Vo = new Catalog3Vo(item.getCatId().toString(), data.getCatId().toString(), data.getName());
-                        return catalog3Vo;
+        String catelogJson = stringRedisTemplate.opsForValue().get("catelogJson");
+        if (StringUtils.isBlank(catelogJson)){
+            log.info("查询数据库。。。");
+                Map<String, List<Catelog2Vo>> cateLogLevel2FromDB = getCateLogLevel2FromDB();
+                String jsonString = JSON.toJSONString(cateLogLevel2FromDB);
+                stringRedisTemplate.opsForValue().set("catelogJson", jsonString);
+            return cateLogLevel2FromDB;
+        }
+        Map<String, List<Catelog2Vo>> stringListMap = JSON.parseObject(catelogJson, new TypeReference<Map<String, List<Catelog2Vo>>>() {});
+        return stringListMap;
+    }
+
+    public Map<String, List<Catelog2Vo>> getCateLogLevel2FromDB() {
+
+        synchronized (this) {
+            String catelogJson = stringRedisTemplate.opsForValue().get("catelogJson");
+        if (!StringUtils.isBlank(catelogJson)){
+            Map<String, List<Catelog2Vo>> stringListMap = JSON.parseObject(catelogJson, new TypeReference<Map<String, List<Catelog2Vo>>>() {});
+            log.info("查数据库。。。拿Redis缓存。。。");
+            return stringListMap;
+        }
+
+
+            log.info("实际操作数据库，查数据。。。");
+            List<CategoryEntity> list = baseMapper.selectList(null);
+
+            /*获取一级分类*/
+            List<CategoryEntity> level1 = getCategoryByLevel(list, 0L);
+
+            /*获取二级分类*/
+            Map<String, List<Catelog2Vo>> listMap = level1.stream().collect(Collectors.toMap(k -> k.getCatId().toString(), v -> {
+                List<CategoryEntity> categoryL2 = getCategoryByLevel(list, v.getCatId());
+                if (!categoryL2.isEmpty()) {
+                    List<Catelog2Vo> collect = categoryL2.stream().map(item -> {
+                        List<CategoryEntity> datalogL3 = getCategoryByLevel(list, item.getCatId());
+                        List<Catalog3Vo> catalog3Vos = datalogL3.stream().map(data -> {
+                            Catalog3Vo catalog3Vo = new Catalog3Vo(item.getCatId().toString(), data.getCatId().toString(), data.getName());
+                            return catalog3Vo;
+                        }).collect(Collectors.toList());
+                        Catelog2Vo catelog2Vo = new Catelog2Vo(v.getCatId().toString(), catalog3Vos, item.getCatId().toString(), item.getName());
+                        return catelog2Vo;
                     }).collect(Collectors.toList());
-                    Catelog2Vo catelog2Vo = new Catelog2Vo(v.getCatId().toString(), catalog3Vos, item.getCatId().toString(), item.getName());
-                    return catelog2Vo;
-                }).collect(Collectors.toList());
-                return collect;
-            }
-            return null;
-        }));
+                    return collect;
+                }
+                return null;
+            }));
 
-        return listMap;
+            String jsonString = JSON.toJSONString(listMap);
+            stringRedisTemplate.opsForValue().set("catelogJson",jsonString);
+
+            return listMap;
+        }
+    }
+
+    public List<CategoryEntity> getCategoryByLevel(List<CategoryEntity> list,long parentId) {
+        return list.stream().filter(item-> item.getParentCid()==parentId).collect(Collectors.toList());
     }
 
     private void recursionAllPath(CategoryEntity categoryEntity, List<Long> longs) {

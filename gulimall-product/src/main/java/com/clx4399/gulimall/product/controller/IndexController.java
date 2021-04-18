@@ -21,6 +21,7 @@ import java.util.Map;
  */
 @Controller()
 public class IndexController {
+
     @Autowired
     private CategoryService categoryService;
 

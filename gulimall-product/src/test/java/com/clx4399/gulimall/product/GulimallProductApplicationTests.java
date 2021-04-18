@@ -7,9 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.lang.reflect.Array;
-import java.util.Arrays;
+import org.springframework.data.redis.core.RedisTemplate;
 
 @Slf4j
 @SpringBootTest
@@ -20,6 +18,9 @@ class   GulimallProductApplicationTests {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    RedisTemplate redisTemplate;
 
     @Test
     void contextLoads() {
