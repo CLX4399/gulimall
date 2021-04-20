@@ -4,6 +4,9 @@ import com.clx4399.common.constant.ProductConstant;
 import com.clx4399.gulimall.product.entity.CategoryEntity;
 import com.clx4399.gulimall.product.service.CategoryService;
 import com.clx4399.gulimall.product.vo.Catelog2Vo;
+import lombok.extern.slf4j.Slf4j;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author WhtCl
@@ -20,10 +24,14 @@ import java.util.Map;
  * @date 2021-04-14 20:46:24
  */
 @Controller()
+@Slf4j
 public class IndexController {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private RedissonClient redissonClient;
 
     /**
      * @param model
@@ -51,6 +59,22 @@ public class IndexController {
     public Map<String,List<Catelog2Vo>> getCatelogJson(){
         Map<String,List<Catelog2Vo>> entityList  = categoryService.getCateLogLevel2();
         return entityList;
+    }
+
+    @GetMapping("/test")
+    @ResponseBody
+    public String test(){
+        RLock mylock = redissonClient.getLock("mylock");
+        try {
+            mylock.lock(10, TimeUnit.SECONDS);
+            log.info("test");
+            Thread.sleep(30000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            mylock.unlock();
+        }
+        return "test";
     }
 
 }

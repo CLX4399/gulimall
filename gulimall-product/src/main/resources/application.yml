@@ -32,3 +32,5 @@ mybatis-plus:
       id-type: auto
 server:
   port: 12000
+
+ipAddr: 139.224.113.89

@@ -24,6 +24,9 @@ class   GulimallProductApplicationTests {
 
     @Test
     void contextLoads() {
+        Integer num = 10;
+        System.out.println(num >> 1);
+
     }
 
 }
