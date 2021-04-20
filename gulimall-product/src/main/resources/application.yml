@@ -25,6 +25,13 @@ spring:
     password: clx4399
     host: 139.224.113.89
     database: 1
+  cache:
+    type: redis
+    redis:
+      time-to-live: 3600000
+      cache-null-values: true
+      key-prefix: CACHE_
+      use-key-prefix: true
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**/*.xml
   global-config:
