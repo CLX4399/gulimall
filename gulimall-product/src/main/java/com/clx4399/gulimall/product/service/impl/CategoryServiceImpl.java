@@ -15,9 +15,9 @@ import com.clx4399.gulimall.product.vo.Catalog3Vo;
 import com.clx4399.gulimall.product.vo.Catelog2Vo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
-import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -74,6 +74,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         return longs.toArray(new Long[longs.size()-1]);
     }
 
+    @CacheEvict(value = {"category"},allEntries = true)
     @Override
     public void updateDetail(CategoryEntity category) {
         this.updateById(category);
@@ -90,12 +91,12 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         return list;
     }
 
-    @Override
-    public Map<String, List<Catelog2Vo>> getCateLogLevel2() {
+    public Map<String, List<Catelog2Vo>> getCateLogLevel2FromRedisTemple() {
 
         String catelogJson = stringRedisTemplate.opsForValue().get("catelogJson");
         if (StringUtils.isBlank(catelogJson)){
-                Map<String, List<Catelog2Vo>> cateLogLevel2FromDB = getCateLogLevel2FromDB();
+                //Map<String, List<Catelog2Vo>> cateLogLevel2FromDB = getCateLogLevel2FromDB();
+                Map<String, List<Catelog2Vo>> cateLogLevel2FromDB = null;
                 String jsonString = JSON.toJSONString(cateLogLevel2FromDB);
                 stringRedisTemplate.opsForValue().set("catelogJson", jsonString);
             return cateLogLevel2FromDB;
@@ -104,15 +105,9 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         return stringListMap;
     }
 
-    public Map<String, List<Catelog2Vo>> getCateLogLevel2FromDB() {
-        RLock lock = redisson.getLock("catelogJson-lock");
-        lock.lock();
-        try {
-
-            String catelogJson = stringRedisTemplate.opsForValue().get("catelogJson");
-            if (!StringUtils.isBlank(catelogJson)) {
-                return JSON.parseObject(catelogJson, new TypeReference<Map<String, List<Catelog2Vo>>>() {});
-            }
+    @Cacheable(cacheNames =  {"categroy"} , key = "#root.methodName")
+    @Override
+    public Map<String, List<Catelog2Vo>> getCateLogLevel2() {
             List<CategoryEntity> list = baseMapper.selectList(null);
 
             /*获取一级分类*/
@@ -136,12 +131,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
                 return null;
             }));
 
-            String jsonString = JSON.toJSONString(listMap);
-            stringRedisTemplate.opsForValue().set("catelogJson", jsonString);
             return listMap;
-        }finally {
-            lock.unlock();
-        }
     }
 
     public List<CategoryEntity> getCategoryByLevel(List<CategoryEntity> list,long parentId) {
