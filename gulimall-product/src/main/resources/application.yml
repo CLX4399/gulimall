@@ -20,7 +20,7 @@ spring:
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
   thymeleaf:
-    cache: true
+    cache: false
   redis:
     password: clx4399
     host: 139.224.113.89

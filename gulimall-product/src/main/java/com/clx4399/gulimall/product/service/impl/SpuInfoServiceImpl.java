@@ -224,9 +224,9 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
         List<Long> ProductAttrIdLists = attrValueEntities.stream().map(item -> item.getAttrId()).collect(Collectors.toList());
         List<Long> attrIds = attrService.selectSearchAttrIds(ProductAttrIdLists);
         Set attrIdsSet = new HashSet(attrIds);
-        List<SkuEsModel.Attr> attrList = attrValueEntities.stream().filter(i -> {
-            return attrIdsSet.contains(i.getAttrId());
-        }).map(item -> {
+        List<SkuEsModel.Attr> attrList = attrValueEntities.stream()
+                .filter(i -> attrIdsSet.contains(i.getAttrId()))
+                .map(item -> {
             SkuEsModel.Attr attr = new SkuEsModel.Attr();
             BeanUtils.copyProperties(item, attr);
             return attr;

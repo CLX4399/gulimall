@@ -108,6 +108,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
     @Cacheable(cacheNames =  {"categroy"} , key = "#root.methodName")
     @Override
     public Map<String, List<Catelog2Vo>> getCateLogLevel2() {
+            log.info("三级分类数据库查询!");
             List<CategoryEntity> list = baseMapper.selectList(null);
 
             /*获取一级分类*/
