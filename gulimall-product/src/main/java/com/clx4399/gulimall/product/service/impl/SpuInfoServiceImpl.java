@@ -222,8 +222,8 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
         /*获取相对应商品属性信息*/
         List<ProductAttrValueEntity> attrValueEntities = productAttrValueService.list(new QueryWrapper<ProductAttrValueEntity>().eq("spu_id", spuId));
         List<Long> ProductAttrIdLists = attrValueEntities.stream().map(item -> item.getAttrId()).collect(Collectors.toList());
-        List<Long> attrIds = attrService.selectSearchAttrIds(ProductAttrIdLists);
-        Set attrIdsSet = new HashSet(attrIds);
+        //List<Long> attrIds = attrService.selectSearchAttrIds(ProductAttrIdLists);
+        Set attrIdsSet = new HashSet(ProductAttrIdLists);
         List<SkuEsModel.Attr> attrList = attrValueEntities.stream()
                 .filter(i -> attrIdsSet.contains(i.getAttrId()))
                 .map(item -> {
