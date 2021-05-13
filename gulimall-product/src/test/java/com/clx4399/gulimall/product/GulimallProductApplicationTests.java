@@ -19,9 +19,6 @@ class   GulimallProductApplicationTests {
     @Autowired
     private CategoryService categoryService;
 
-    @Autowired
-    RedisTemplate redisTemplate;
-
     @Test
     void contextLoads() {
         Integer num = 10;

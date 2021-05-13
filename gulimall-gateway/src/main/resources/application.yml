@@ -43,9 +43,7 @@ spring:
         - id: gulimall_host_route
           uri: lb://gulimall-product
           predicates:
-            - Host=gulimall.com
-
-
+            - Host=gulimall.com,item.gulimall.com
 
         - id: admin-route
           uri: lb://renren-fast

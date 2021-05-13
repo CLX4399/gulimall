@@ -16,8 +16,9 @@ import lombok.NoArgsConstructor;
 public enum EsConstant {
 
 
-    PRODUCT_INDEX("product","商品检索索引");
+    PRODUCT_INDEX("gulimall_product","商品检索索引");
 
+    public static final int PRODUCT_PAGESIZE = 50;
     private String index;
 
     private String message;

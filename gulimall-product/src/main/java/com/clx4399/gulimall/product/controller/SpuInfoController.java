@@ -26,6 +26,13 @@ public class SpuInfoController {
     @Autowired
     private SpuInfoService spuInfoService;
 
+    /**
+     * @param spuId
+     * @return com.clx4399.common.utils.R
+     * @author CLX
+     * @describe: 商品上架
+     * @date 2021/5/12 16:36
+     */
     @PostMapping("/{spuid}/up")
     public R getSkuInfoBySkuId(@PathVariable("spuid") Long spuId){
 

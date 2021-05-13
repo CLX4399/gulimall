@@ -1,7 +1,9 @@
 package com.example.search.search.vo;
 
 import com.clx4399.common.to.SkuEsModel;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +17,8 @@ import java.util.List;
  * Description：包含页面需要的所有信息
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class SearchResult {
 
     /**
@@ -66,6 +70,8 @@ public class SearchResult {
     private List<Long> attrIds = new ArrayList<>();
 
     @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class NavVo {
         private String name;
         private String navValue;
@@ -73,6 +79,8 @@ public class SearchResult {
     }
 
     @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class BrandVo {
 
         private Long brandId;
@@ -81,12 +89,16 @@ public class SearchResult {
     }
 
     @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class CatalogVo {
         private Long catalogId;
         private String catalogName;
     }
 
     @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class AttrVo {
 
         private Long attrId;
