@@ -64,6 +64,7 @@ public class MallSearchProductServiceImpl implements MallSearchProductService {
 
         /*2.执行索引请求*/
         try {
+            log.info(searchRequest.toString());
             SearchResponse searchResponse = client.search(searchRequest, GuLiMallElasticsreachConfig.COMMON_OPTIONS);
             //es响应数据封装
             searchResult = buildSearchResult(searchResponse,searchParam);
