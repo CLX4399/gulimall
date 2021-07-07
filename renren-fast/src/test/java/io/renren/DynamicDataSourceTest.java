@@ -8,12 +8,13 @@
 
 package io.renren;
 
-import io.renren.service.DynamicDataSourceTestService;
+import com.google.common.util.concurrent.Runnables;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.concurrent.*;
 
 /**
  * 多数据源测试
@@ -23,12 +24,41 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class DynamicDataSourceTest {
-    @Autowired
-    private DynamicDataSourceTestService dynamicDataSourceTestService;
+
 
     @Test
-    public void test(){
+    public void test() throws ExecutionException, InterruptedException {
+        ExecutorService executorService = Executors.newFixedThreadPool(50);
+        executorService.execute(new ThreadForThread());
 
+        FutureTask<Integer> integerFutureTask = new FutureTask<>(new Callanle01());
+        executorService.execute(integerFutureTask);
+        System.out.println(integerFutureTask.get());
+
+        executorService.execute(new ThreadForRunable());
+
+    }
+
+    public static class ThreadForThread extends Thread {
+        @Override
+        public void run() {
+            System.out.println("Thread快跑"+Thread.currentThread().getName());
+        }
+    }
+
+    public static class ThreadForRunable implements Runnable {
+
+        @Override
+        public void run() {
+            System.out.println("Runnable快跑"+Thread.currentThread().getName());
+        }
+    }
+
+    public static class Callanle01 implements Callable<Integer> {
+        @Override
+        public Integer call() throws Exception {
+            return 100*100;
+        }
     }
 
 }
