@@ -1,7 +1,11 @@
 package com.clx4399.gulimall.product.controller;
 
+import com.clx4399.gulimall.product.service.SkuInfoService;
+import com.clx4399.gulimall.product.vo.SkuItemVo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 
 /**
@@ -13,6 +17,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class ItemController {
 
+    @Autowired
+    private SkuInfoService skuInfoService;
+
     /**
      * @param
      * @return java.lang.String
@@ -21,8 +28,8 @@ public class ItemController {
      * @date 2021/5/11 10:42
      */
     @GetMapping("/{skuId}.html")
-    public String skuItem(){
-
+    public String skuItem(@PathVariable String skuId){
+        SkuItemVo skuItemVo = skuInfoService.item(skuId);
         return "item";
     }
 

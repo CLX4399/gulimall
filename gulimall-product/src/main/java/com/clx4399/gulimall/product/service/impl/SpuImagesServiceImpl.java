@@ -1,5 +1,6 @@
 package com.clx4399.gulimall.product.service.impl;
 
+import com.clx4399.gulimall.product.entity.SkuImagesEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -45,5 +46,6 @@ public class SpuImagesServiceImpl extends ServiceImpl<SpuImagesDao, SpuImagesEnt
             this.saveBatch(collect);
         }
     }
+
 
 }
