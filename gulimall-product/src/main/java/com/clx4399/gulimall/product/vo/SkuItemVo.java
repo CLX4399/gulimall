@@ -31,5 +31,8 @@ public class SkuItemVo {
     //获取spu的参数规格信息
     private List<SpuItemAttrGroupVo> attrGroups;
 
+    //是否有货
+    private boolean hasStock = true;
+
 
 }

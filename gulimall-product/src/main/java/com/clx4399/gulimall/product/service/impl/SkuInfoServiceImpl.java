@@ -111,9 +111,10 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
 
         //获取spu的sku组合信息
         List<SkuItemSaleAttrVo> saleAttrVos = saleAttrValueService.getSkuSaleAttrsBy(skuInfoEntity.getSpuId());
+        skuItemVo.setSaleAttrs(saleAttrVos);
 
         //获取spu的介绍
-        SpuInfoDescEntity descEntity = descService.getById(skuInfoEntity.getSpuId());
+        SpuInfoDescEntity descEntity = descService.getOne(new QueryWrapper<SpuInfoDescEntity>().eq("spu_id",skuInfoEntity.getSpuId()));
         skuItemVo.setDesc(descEntity);
 
         //获取spu的参数规格信息
