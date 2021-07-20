@@ -7,6 +7,7 @@ import com.clx4399.gulimall.product.vo.SkuItemVo;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 /**
  * sku信息
@@ -46,6 +47,6 @@ public interface SkuInfoService extends IService<SkuInfoEntity> {
      * @describe: 通过skuid获取基本商品信息
      * @date 2021/7/14 20:08
      */
-    SkuItemVo item(String skuId);
+    SkuItemVo item(String skuId) throws ExecutionException, InterruptedException;
 }
 

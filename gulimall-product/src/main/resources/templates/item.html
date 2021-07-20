@@ -60,10 +60,10 @@
             </ul>
             <ul class="header_ul_right">
                 <li style="border: 0;">
-                    <a href="http://auth.greymall.com/login.html" th:if="${session.loginUser==null}" class="aa">你好，请登录</a>
+                    <a href="http://auth.gulimall.com/login.html" th:if="${session.loginUser==null}" class="aa">你好，请登录</a>
                     <a th:if="${session.loginUser!=null}" class="aa" style="width: 100px">[[${session.loginUser.nickname}]]</a>
                 </li>
-                <li><a th:if="${session.loginUser==null}" href="http://auth.greymall.com/reg.html" style="color: red;">免费注册</a> |</li>
+                <li><a th:if="${session.loginUser==null}" href="http://auth.gulimall.com/reg.html" style="color: red;">免费注册</a> |</li>
                 <li><a href="/static/item/javascript:;" class="aa">我的订单</a> |</li>
                 <li class="jingdong"><a href="/static/item/javascript:;">我的京东</a><span
                         class="glyphicon glyphicon-menu-down">|</span>
@@ -260,7 +260,7 @@
     <nav>
         <div class="nav_min">
             <div class="nav_top">
-                <div class="nav_top_one"><a href="http://greymall.com"><img src="/static/item/img/111.png"/></a></div>
+                <div class="nav_top_one"><a href="http://gulimall.com"><img src="/static/item/img/111.png"/></a></div>
                 <div class="nav_top_two"><input type="text"/>
                     <button>搜索</button>
                 </div>
@@ -610,8 +610,15 @@
                     <div class="box-attr clear" th:each="attr:${item.saleAttrs}">
                         <dl>
                             <dt>选择[[${attr.attrName}]]</dt>
-                            <dd th:each="vals:${#strings.listSplit(attr.attrValues,',')}">
-                                [[${vals}]]
+                            <dd th:each="vals:${attr.attrValues}">
+
+                                <a
+                                        th:attr="
+										   		skus=${vals.skuIds},
+										   		class=${#lists.contains(#strings.listSplit(vals.skuIds,','),item.info.skuId.toString())?'sku_attr_value checked':'sku_attr_value'}">
+                                    [[${vals.attrValue}]]
+                                    <!--											<img src="/static/item/img/59ddfcb1Nc3edb8f1.jpg" /> [[${val}]]-->
+                                </a>
                             </dd>
                         </dl>
                     </div>
@@ -1309,7 +1316,7 @@
         // if(filterEle[0] == undefined){
         //     filterEle[0] = 1;
         // }
-        location.href = "http://item.greymall.com/" + filterEle[0] + ".html";
+        location.href = "http://item.gulimall.com/" + filterEle[0] + ".html";
 
     });
 
@@ -1321,7 +1328,7 @@
     $("#addToCartA").click(function () {
         var num = $('#numInput').val();
         var skuId = $(this).attr("skuId");
-        location.href = "http://cart.greymall.com/addToCart?skuId=" + skuId +"&num=" + num;
+        location.href = "http://cart.gulimall.com/addToCart?skuId=" + skuId +"&num=" + num;
         return false;
     });
 
@@ -1331,7 +1338,7 @@
             var killId = $(this).attr("sessionId") + "_" + $(this).attr("skuId");
             var key = $(this).attr("code");
             var num = $("#numInput").val();
-            location.href = "http://seckill.greymall.com/kill?killId="+killId+"&key="+ key +"&num=" + num;
+            location.href = "http://seckill.gulimall.com/kill?killId="+killId+"&key="+ key +"&num=" + num;
             return false;
         } else {
             alert("秒杀请先登录")
