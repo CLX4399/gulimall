@@ -20,5 +20,4 @@ public class ThreadPoolConfigProperties {
     private Long keepAliveTime;
     private Integer capacity;
 
-
 }
