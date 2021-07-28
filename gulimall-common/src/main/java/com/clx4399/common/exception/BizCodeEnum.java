@@ -10,6 +10,8 @@ public enum BizCodeEnum {
 
     UNKNOWN_EXCEPTION(10000,"系统未知异常"),
 
+    SMS_CODE_EXCEPTION(10002,"短息发送频繁，请稍后再试"),
+
     PRODUCT_UP_EXCEPTION(500,"es数据异常");
 
     private int code;
