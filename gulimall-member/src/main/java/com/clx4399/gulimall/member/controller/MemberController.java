@@ -4,13 +4,11 @@ import java.util.Arrays;
 import java.util.Map;
 
 import com.clx4399.gulimall.member.feign.CouponTestFeign;
+import com.clx4399.gulimall.member.vo.MemberUserRegisterVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.*;
 
 import com.clx4399.gulimall.member.entity.MemberEntity;
 import com.clx4399.gulimall.member.service.MemberService;
@@ -38,6 +36,18 @@ public class MemberController {
     @RequestMapping("/allCoupons")
     public R allCoupons(){
         return couponTestFeign.allList().put("测试获取优惠券","成功!");
+    }
+
+    /**
+     * @param userRegisterVo
+     * @return com.clx4399.common.utils.R
+     * @author CLX
+     * @describe: 用户注册
+     * @date 2021/7/29 21:49
+     */
+    @PostMapping("/regist")
+    public R regist(MemberUserRegisterVo userRegisterVo){
+        return R.ok();
     }
 
     /**
