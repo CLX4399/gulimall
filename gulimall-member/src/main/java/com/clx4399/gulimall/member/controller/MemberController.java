@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Map;
 
 import com.clx4399.gulimall.member.feign.CouponTestFeign;
+import com.clx4399.gulimall.member.vo.MemberUserLoginVo;
 import com.clx4399.gulimall.member.vo.MemberUserRegisterVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -46,8 +47,15 @@ public class MemberController {
      * @date 2021/7/29 21:49
      */
     @PostMapping("/regist")
-    public R regist(MemberUserRegisterVo userRegisterVo){
-        return R.ok();
+    public R regist(@RequestBody MemberUserRegisterVo userRegisterVo){
+        boolean regist = memberService.regist(userRegisterVo);
+        return regist?R.ok():R.error();
+    }
+
+    @PostMapping("/login")
+    public R login(@RequestBody MemberUserLoginVo userLoginVo){
+        boolean regist = memberService.login(userLoginVo);
+        return regist?R.ok():R.error();
     }
 
     /**

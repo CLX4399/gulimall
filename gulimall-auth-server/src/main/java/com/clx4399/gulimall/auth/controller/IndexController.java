@@ -6,7 +6,9 @@ import cn.hutool.core.util.RandomUtil;
 import com.clx4399.common.constant.AuthServerConstant;
 import com.clx4399.common.exception.BizCodeEnum;
 import com.clx4399.common.utils.R;
+import com.clx4399.gulimall.auth.feign.MemberFeignService;
 import com.clx4399.gulimall.auth.feign.ThridPartyFeignService;
+import com.clx4399.gulimall.auth.vo.UserLoginVo;
 import com.clx4399.gulimall.auth.vo.UserRegisterVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.swing.*;
@@ -39,6 +38,9 @@ public class IndexController {
 
     @Autowired
     private ThridPartyFeignService thridPartyFeignService;
+
+    @Autowired
+    private MemberFeignService memberFeignService;
 
     @Autowired
     private StringRedisTemplate redisTemplate;
@@ -73,8 +75,16 @@ public class IndexController {
         return R.ok();
     }
 
-    @GetMapping("/sms/registerOperation")
-    @ResponseBody
+    /**
+     * @param userRegisterVo
+	 * @param result
+	 * @param redirectAttributes
+     * @return java.lang.String
+     * @author CLX
+     * @describe: 用户注册
+     * @date 2021/8/2 16:30
+     */
+    @PostMapping("/register")
     public String registerOperation(@Valid UserRegisterVo userRegisterVo, BindingResult result, RedirectAttributes redirectAttributes){
         //注册参数校验
         if (result.hasErrors()){
@@ -90,12 +100,29 @@ public class IndexController {
         } else {
             HashMap<String, String> errors = new HashMap<>();
             errors.put("errors","验证码异常!");
-            redirectAttributes.addAttribute(errors);
+            redirectAttributes.addAllAttributes(errors);
             return "redirect:http://auth.gulimall.com/reg.html";
         }
 
+        memberFeignService.regist(userRegisterVo);
+        return "redirect:http://auth.gulimall.com/login.html";
+    }
 
-        return "forward:login.html";
+    /**
+     * @param userLoginVo
+     * @return java.lang.String
+     * @author CLX
+     * @describe:
+     * @date 2021/8/2 16:30
+     */
+    @PostMapping("/login")
+    String registerOperation(UserLoginVo userLoginVo) {
+        R login = memberFeignService.login(userLoginVo);
+        if (login.getCode()!=0){
+            return "login";
+        }else {
+            return "redirect:http://gulimall.com";
+        }
     }
 
     @RequestMapping("/login.html")
