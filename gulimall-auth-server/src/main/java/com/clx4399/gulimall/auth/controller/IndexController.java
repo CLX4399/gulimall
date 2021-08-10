@@ -3,24 +3,25 @@ package com.clx4399.gulimall.auth.controller;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.core.util.RandomUtil;
+import com.alibaba.fastjson.TypeReference;
 import com.clx4399.common.constant.AuthServerConstant;
 import com.clx4399.common.exception.BizCodeEnum;
 import com.clx4399.common.utils.R;
 import com.clx4399.gulimall.auth.feign.MemberFeignService;
 import com.clx4399.gulimall.auth.feign.ThridPartyFeignService;
+import com.clx4399.gulimall.auth.vo.MemberResponseVo;
 import com.clx4399.gulimall.auth.vo.UserLoginVo;
 import com.clx4399.gulimall.auth.vo.UserRegisterVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.swing.*;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
@@ -116,10 +117,12 @@ public class IndexController {
      * @date 2021/8/2 16:30
      */
     @PostMapping("/login")
-    String registerOperation(UserLoginVo userLoginVo) {
+    String registerOperation(UserLoginVo userLoginVo, HttpSession session) {
         R login = memberFeignService.login(userLoginVo);
-        if (login.getCode()!=0){
-            return "login";
+        if (login.getCode()==0){
+            MemberResponseVo data = login.getData("data", new TypeReference<MemberResponseVo>(){});
+            session.setAttribute("data",data);
+            return "redirect:http://gulimall.com";
         }else {
             return "redirect:http://gulimall.com";
         }

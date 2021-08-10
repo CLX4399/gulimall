@@ -54,8 +54,8 @@ public class MemberController {
 
     @PostMapping("/login")
     public R login(@RequestBody MemberUserLoginVo userLoginVo){
-        boolean regist = memberService.login(userLoginVo);
-        return regist?R.ok():R.error();
+        MemberEntity regist = memberService.login(userLoginVo);
+        return regist!=null?R.ok().setData(regist):R.error();
     }
 
     /**

@@ -35,6 +35,6 @@ public interface MemberService extends IService<MemberEntity> {
      * @describe: 登录功能
      * @date 2021/8/2 16:38
      */
-    boolean login(MemberUserLoginVo userLoginVo);
+    MemberEntity login(MemberUserLoginVo userLoginVo);
 }
 

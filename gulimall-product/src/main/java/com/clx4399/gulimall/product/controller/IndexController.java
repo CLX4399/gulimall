@@ -61,20 +61,4 @@ public class IndexController {
         return entityList;
     }
 
-    @GetMapping("/test")
-    @ResponseBody
-    public String test(){
-        RLock mylock = redissonClient.getLock("mylock");
-        try {
-            mylock.lock(10, TimeUnit.SECONDS);
-            log.info("test");
-            Thread.sleep(30000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } finally {
-            mylock.unlock();
-        }
-        return "test";
-    }
-
 }
