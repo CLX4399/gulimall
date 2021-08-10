@@ -1,4 +1,4 @@
-package com.clx4399.gulimall.auth.vo;
+package com.clx4399.common.vo;
 
 import lombok.Data;
 import lombok.ToString;

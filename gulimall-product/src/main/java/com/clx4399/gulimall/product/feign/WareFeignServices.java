@@ -1,7 +1,6 @@
 package com.clx4399.gulimall.product.feign;
 
 import com.clx4399.common.utils.R;
-import com.clx4399.gulimall.product.vo.SkuHasStockVo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,6 +21,6 @@ public interface WareFeignServices {
      * 返回skuId 和 stock库存量
      */
     @PostMapping("/ware/waresku/hasStock")
-    R<List<SkuHasStockVo>> getSkuHasStock(@RequestBody List<Long> SkuIds);
+    R getSkuHasStock(@RequestBody List<Long> SkuIds);
 
 }

@@ -1,7 +1,5 @@
 package com.clx4399.gulimall.auth.controller;
 
-import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.core.util.RandomUtil;
 import com.alibaba.fastjson.TypeReference;
 import com.clx4399.common.constant.AuthServerConstant;
@@ -9,7 +7,7 @@ import com.clx4399.common.exception.BizCodeEnum;
 import com.clx4399.common.utils.R;
 import com.clx4399.gulimall.auth.feign.MemberFeignService;
 import com.clx4399.gulimall.auth.feign.ThridPartyFeignService;
-import com.clx4399.gulimall.auth.vo.MemberResponseVo;
+import com.clx4399.common.vo.MemberResponseVo;
 import com.clx4399.gulimall.auth.vo.UserLoginVo;
 import com.clx4399.gulimall.auth.vo.UserRegisterVo;
 import org.apache.commons.lang3.StringUtils;
@@ -121,7 +119,7 @@ public class IndexController {
         R login = memberFeignService.login(userLoginVo);
         if (login.getCode()==0){
             MemberResponseVo data = login.getData("data", new TypeReference<MemberResponseVo>(){});
-            session.setAttribute("data",data);
+            session.setAttribute("loginUser",data);
             return "redirect:http://gulimall.com";
         }else {
             return "redirect:http://gulimall.com";

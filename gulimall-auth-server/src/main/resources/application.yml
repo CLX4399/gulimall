@@ -6,7 +6,7 @@ spring:
   redis:
     password: clx4399
     host: 139.224.113.89
-    database: 1
     port: 6379
   session:
     store-type: redis
+    timeout: 30m
