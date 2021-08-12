@@ -119,7 +119,7 @@ public class IndexController {
         R login = memberFeignService.login(userLoginVo);
         if (login.getCode()==0){
             MemberResponseVo data = login.getData("data", new TypeReference<MemberResponseVo>(){});
-            session.setAttribute("loginUser",data);
+            session.setAttribute(AuthServerConstant.LOGIN_USER,data);
             return "redirect:http://gulimall.com";
         }else {
             return "redirect:http://gulimall.com";
@@ -127,7 +127,8 @@ public class IndexController {
     }
 
     @RequestMapping("/login.html")
-    public String loginPage(){
+    public String loginPage(HttpSession session){
+        Object attribute = session.getAttribute(AuthServerConstant.LOGIN_USER);
         return "login";
     }
 

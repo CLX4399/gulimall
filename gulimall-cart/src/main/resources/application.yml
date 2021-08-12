@@ -1,11 +1,9 @@
+server:
+  port: 21000
 spring:
-  thymeleaf:
-    cache: false
   redis:
     password: clx4399
     host: 139.224.113.89
     port: 6379
   session:
     store-type: redis
-server:
-  port: 16000

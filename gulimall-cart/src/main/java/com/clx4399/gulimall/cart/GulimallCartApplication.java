@@ -1,4 +1,4 @@
-package com.example.search.search;
+package com.clx4399.gulimall.cart;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -7,14 +7,17 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
+/**
+ * @author WhtCl
+ */
 @EnableRedisHttpSession
 @EnableDiscoveryClient
-@EnableFeignClients
+@EnableFeignClients("com.clx4399.gulimall.cart.feign")
 @SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
-public class GulimallSearchApplication {
+public class GulimallCartApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(GulimallSearchApplication.class, args);
+        SpringApplication.run(GulimallCartApplication.class, args);
     }
 
 }
