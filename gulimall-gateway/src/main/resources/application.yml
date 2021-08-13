@@ -45,6 +45,11 @@ spring:
           predicates:
             - Host=search.gulimall.com
 
+        - id: gulimall-cart_route
+          uri: lb://gulimall-cart
+          predicates:
+            - Host=cart.gulimall.com
+
         - id: gulimall_host_route
           uri: lb://gulimall-product
           predicates:

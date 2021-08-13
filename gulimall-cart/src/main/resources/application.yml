@@ -7,3 +7,4 @@ spring:
     port: 6379
   session:
     store-type: redis
+ipAddr: 139.224.113.89
