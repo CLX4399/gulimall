@@ -34,7 +34,7 @@ public interface ProductServiceFeign {
      * @describe: skuid获取销售信息
      * @date 2021/8/13 15:29
      */
-    @GetMapping(value = "/stringList/{skuId}")
+    @GetMapping(value = "/product/skusaleattrvalue/stringList/{skuId}")
     List<String> getSkuSaleAttrValues(@PathVariable("skuId") Long skuId);
 
 }

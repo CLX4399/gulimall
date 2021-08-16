@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
@@ -644,14 +643,17 @@
                     </div>
 
 
-                    <div class="box-btns-two">
-                        <a href="#" id="secKillA">
+                    <!--<div class="box-btns-two"
+                         th:if="${item.seckillSkuVo != null && (#dates.createNow().getTime() >= item.seckillSkuVo.startTime && #dates.createNow().getTime() <= item.seckillSkuVo.endTime)}">
+                        <a class="seckill" href="#"
+                           th:attr="skuId=${item.info.skuId},sessionId=${item.seckillSkuVo.promotionSessionId},code=${item.seckillSkuVo.randomCode}">
                             立即抢购
                         </a>
-                    </div>
+                    </div>-->
 
-                    <div class="box-btns-two">
-                        <a href="#" id="addToCartA" >
+                    <div class="box-btns-two"
+                         >
+                        <a id="addToCartA" href="#" th:attr="skuId=${item.info.skuId}">
                             加入购物车
                         </a>
                     </div>
@@ -1329,7 +1331,6 @@
         var num = $('#numInput').val();
         var skuId = $(this).attr("skuId");
         location.href = "http://cart.gulimall.com/addToCart?skuId=" + skuId +"&num=" + num;
-        return false;
     });
 
     $("#secKillA").click(function () {
