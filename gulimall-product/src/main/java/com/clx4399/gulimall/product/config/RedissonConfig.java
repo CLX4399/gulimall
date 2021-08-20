@@ -1,4 +1,4 @@
-package com.clx4399.gulimall.product.config;
+/*package com.clx4399.gulimall.product.config;
 
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
@@ -7,12 +7,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-/**
+*//**
  * @author WhtCl
  * @program: gulimall
  * @description: Redisson配置
  * @date 2021-04-19 11:45:51
- */
+ *//*
 @Configuration
 public class RedissonConfig {
 
@@ -27,4 +27,4 @@ public class RedissonConfig {
         config.useSingleServer().setAddress("redis://" + ipAddr + ":6379").setPassword("clx4399");
         return Redisson.create(config);
     }
-}
+}*/

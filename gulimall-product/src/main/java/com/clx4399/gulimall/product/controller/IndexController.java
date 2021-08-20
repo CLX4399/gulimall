@@ -5,8 +5,6 @@ import com.clx4399.gulimall.product.entity.CategoryEntity;
 import com.clx4399.gulimall.product.service.CategoryService;
 import com.clx4399.gulimall.product.vo.Catelog2Vo;
 import lombok.extern.slf4j.Slf4j;
-import org.redisson.api.RLock;
-import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,9 +27,6 @@ public class IndexController {
 
     @Autowired
     private CategoryService categoryService;
-
-    @Autowired
-    private RedissonClient redissonClient;
 
     /**
      * @param model

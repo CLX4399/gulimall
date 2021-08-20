@@ -15,7 +15,6 @@ import com.clx4399.gulimall.product.vo.Catalog3Vo;
 import com.clx4399.gulimall.product.vo.Catelog2Vo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
-import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -34,9 +33,6 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
-
-    @Autowired
-    private RedissonClient redisson;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
