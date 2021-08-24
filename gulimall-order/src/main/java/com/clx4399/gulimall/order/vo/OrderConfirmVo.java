@@ -33,6 +33,16 @@ public class OrderConfirmVo {
     @Setter @Getter
     String orderToken;
 
+    public Integer getCount(){
+        Integer i = 0;
+        if(items != null){
+            for (OrderItemVo item : items) {
+                i+=item.getCount();
+            }
+        }
+        return i;
+    }
+
     //库存
     @Setter @Getter
     Map<Long,Boolean> stocks;
@@ -48,5 +58,9 @@ public class OrderConfirmVo {
         }
 
         return sum;
+    }
+
+    public BigDecimal getPayPrice() {
+        return getTotal();
     }
 }

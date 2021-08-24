@@ -3,12 +3,9 @@ package com.clx4399.gulimall.ware.controller;
 import java.util.Arrays;
 import java.util.Map;
 
+import com.clx4399.gulimall.ware.vo.FareVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.clx4399.gulimall.ware.entity.WareInfoEntity;
 import com.clx4399.gulimall.ware.service.WareInfoService;
@@ -29,6 +26,19 @@ import com.clx4399.common.utils.R;
 public class WareInfoController {
     @Autowired
     private WareInfoService wareInfoService;
+
+    /**
+     * 获取运费信息
+     * @return com.clx4399.common.utils.R
+     * @author CLX
+     * @describe:
+     * @date 2021/8/24 21:08
+     */
+    @GetMapping("fare")
+    R getFare(@RequestParam Long addrId){
+        FareVo fareVo = wareInfoService.getfare(addrId);
+        return R.ok().setData(fareVo);
+    }
 
     /**
      * 列表

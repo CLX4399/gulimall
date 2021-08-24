@@ -751,7 +751,7 @@
         </p>
         <p class="yfze_b">寄送至：<span id="receiveAddressEle"></span> 收货人：<span id="receiverEle"></span></p>
     </div>
-    <form action="http://order.greymall.com/submitOrder" method="post">
+    <form action="http://order.gulimall.com/submitOrder" method="post">
         <input type="hidden" name="addrId" id="addrIdInput">
         <input type="hidden" name="payPrice" id="payPriceInput">
         <input type="hidden" name="orderToken" th:value="${orderConfirmData.orderToken}">
@@ -1014,7 +1014,7 @@
     function getFare(addrId) {
         //给表单回填选择的地址
         $('#addrIdInput').val(addrId);
-        $.get("http://greymall.com/api/ware/wareinfo/fare?addrId=" + addrId, function (data) {
+        $.get("http://gulimall.com/api/ware/wareinfo/fare?addrId=" + addrId, function (data) {
             // console.log(data);
             $("#fareEle").text(data.data.fare);
             var total = [[${orderConfirmData.total}]];
