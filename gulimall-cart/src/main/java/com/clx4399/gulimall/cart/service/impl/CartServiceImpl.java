@@ -177,6 +177,26 @@ public class CartServiceImpl implements CartService {
         cartOps.delete(skuId.toString());
     }
 
+    @Override
+    public List<CartItemVo> getCurrentUserCartItems() {
+        UserInfoTo userInfoTo = CartInterceptor.toThreadLocal.get();
+        if (userInfoTo.getUserId() == null){
+            return null;
+        }else {
+            String userKey =CART_PREFIX + userInfoTo.getUserId();
+            List<CartItemVo> cartItem = getCartItem(userKey);
+            List<CartItemVo> collect = cartItem.stream().filter(item -> item.getCheck()).map(item -> {
+                //更新商品价格为最新的商品价格
+                R skuInfoById = productServiceFeign.getSkuInfoById(item.getSkuId());
+                SkuInfoVo data = skuInfoById.getData("skuInfo",new TypeReference<SkuInfoVo>() {
+                });
+                item.setPrice(data.getPrice());
+                return item;
+            }).collect(Collectors.toList());
+            return collect;
+        }
+    }
+
     /**
      * @param cartKey
      * @return void

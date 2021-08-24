@@ -3,6 +3,7 @@ package com.clx4399.gulimall.cart.service;
 import com.clx4399.gulimall.cart.vo.CartItemVo;
 import com.clx4399.gulimall.cart.vo.CartVo;
 
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -78,4 +79,13 @@ public interface CartService {
      * @date 2021/8/16 14:55
      */
     void deleteIdCartInfo(Integer skuId);
+
+    /**
+     * @param
+     * @return java.util.List<com.clx4399.gulimall.cart.vo.CartItemVo>
+     * @author CLX
+     * @describe: 获取当前用户最新购物车商品信息
+     * @date 2021/8/24 11:15
+     */
+    List<CartItemVo> getCurrentUserCartItems();
 }

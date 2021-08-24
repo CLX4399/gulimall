@@ -12,7 +12,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -27,6 +29,20 @@ public class CartController {
 
     @Autowired
     private CartService cartService;
+
+    /**
+     * @param
+     * @return java.util.List<com.clx4399.gulimall.order.vo.OrderItemVo>
+     * @author CLX
+     * @describe: 获取当前用户购物车商品信息
+     * @date 2021/8/23 16:46
+     */
+    @ResponseBody
+    @GetMapping("/currentUserCartItems")
+    public List<CartItemVo> getCurrentUserCartItems(){
+        return cartService.getCurrentUserCartItems();
+    }
+
 
     /**
      * @param skuId
