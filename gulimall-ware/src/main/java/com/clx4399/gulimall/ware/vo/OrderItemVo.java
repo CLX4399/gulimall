@@ -1,4 +1,4 @@
-package com.clx4399.gulimall.order.vo;
+package com.clx4399.gulimall.ware.vo;
 
 import lombok.Data;
 

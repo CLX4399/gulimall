@@ -1,10 +1,13 @@
 package com.clx4399.gulimall.ware.controller;
 
+import com.clx4399.common.exception.BizCodeEnum;
+import com.clx4399.common.exception.NoStockException;
 import com.clx4399.common.utils.PageUtils;
 import com.clx4399.common.utils.R;
 import com.clx4399.gulimall.ware.entity.WareSkuEntity;
 import com.clx4399.gulimall.ware.service.WareSkuService;
 import com.clx4399.gulimall.ware.vo.SkuHasStockVo;
+import com.clx4399.gulimall.ware.vo.WareSkuLockVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,8 +30,18 @@ public class WareSkuController {
     @Autowired
     private WareSkuService wareSkuService;
 
-    // sku的规格参数相同，因此我们要将查询规格参数提前，只查询一次
+    @PostMapping("/ware/waresku/lock/order")
+    R orderLockStock(WareSkuLockVo lockVo){
+        try {
+            boolean stock = wareSkuService.orderLockStock(lockVo);
+            return R.ok().setData(stock);
+        } catch (NoStockException e) {
+            return R.error(BizCodeEnum.NO_STOCK_EXCEPTION.getCode(), BizCodeEnum.NO_STOCK_EXCEPTION.getMessage());
+        }
+    }
+
     /**
+     * sku的规格参数相同，因此我们要将查询规格参数提前，只查询一次
      * 查询sku是否有库存
      * 返回skuId 和 stock库存量
      */

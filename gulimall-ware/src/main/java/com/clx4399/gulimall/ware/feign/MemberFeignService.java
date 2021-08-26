@@ -21,7 +21,7 @@ public interface MemberFeignService {
      * @describe: 获取用户信息根据id
      * @date 2021/8/24 21:12
      */
-    @RequestMapping("/member/member/info/{id}")
+    @RequestMapping("/member/memberreceiveaddress/info/{id}")
     R info(@PathVariable("id") Long id);
 
 }

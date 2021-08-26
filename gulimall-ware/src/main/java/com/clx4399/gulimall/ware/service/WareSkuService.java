@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.clx4399.common.utils.PageUtils;
 import com.clx4399.gulimall.ware.entity.WareSkuEntity;
 import com.clx4399.gulimall.ware.vo.SkuHasStockVo;
+import com.clx4399.gulimall.ware.vo.WareSkuLockVo;
 
 import java.util.List;
 import java.util.Map;
@@ -38,5 +39,14 @@ public interface WareSkuService extends IService<WareSkuEntity> {
      * @date 2021/4/13 19:42
      */
     List<SkuHasStockVo> getSkuHasStock(List<Long> skuIds);
+
+    /**
+     * @param lockVo
+     * @return boolean
+     * @author CLX
+     * @describe: 锁定商品库存
+     * @date 2021/8/26 14:46
+     */
+    boolean orderLockStock(WareSkuLockVo lockVo);
 }
 

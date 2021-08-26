@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.clx4399.common.utils.PageUtils;
 import com.clx4399.gulimall.order.entity.OmsOrderEntity;
 import com.clx4399.gulimall.order.vo.OrderConfirmVo;
+import com.clx4399.gulimall.order.vo.OrderSubmitVo;
+import com.clx4399.gulimall.order.vo.SubmitOrderResponseVo;
 
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -27,5 +29,14 @@ public interface OmsOrderService extends IService<OmsOrderEntity> {
      * @date 2021/8/23 15:34
      */
     OrderConfirmVo confirmOrder() throws ExecutionException, InterruptedException;
+
+    /**
+     * @param vo
+     * @return com.clx4399.gulimall.order.vo.SubmitOrderResponseVo
+     * @author CLX
+     * @describe: 下单：去创建订单，验令牌，验价格，锁库存
+     * @date 2021/8/25 17:45
+     */
+    SubmitOrderResponseVo submitOrder(OrderSubmitVo vo);
 }
 

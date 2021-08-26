@@ -54,7 +54,7 @@ public class WareInfoServiceImpl extends ServiceImpl<WareInfoDao, WareInfoEntity
     public FareVo getfare(Long addrId) {
         FareVo fareVo = new FareVo();
         R info = memberFeignService.info(addrId);
-        fareVo.setAddress(info.getData(new TypeReference<MemberAddressVo>(){}));
+        fareVo.setAddress(info.getData("memberReceiveAddress",new TypeReference<MemberAddressVo>(){}));
         Random random = new Random();
         int i = random.nextInt(50);
         fareVo.setFare(new BigDecimal(i));
