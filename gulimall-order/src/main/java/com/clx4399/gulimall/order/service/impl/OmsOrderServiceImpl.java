@@ -3,10 +3,8 @@ package com.clx4399.gulimall.order.service.impl;
 import com.alibaba.fastjson.TypeReference;
 import com.alibaba.nacos.common.util.UuidUtils;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
-import com.clx4399.common.exception.NoStockException;
 import com.clx4399.common.utils.R;
 import com.clx4399.common.vo.MemberResponseVo;
-import com.clx4399.gulimall.order.constant.OrderConstant;
 import com.clx4399.gulimall.order.entity.OmsOrderItemEntity;
 import com.clx4399.gulimall.order.enume.OrderStatusEnum;
 import com.clx4399.gulimall.order.feign.CartFeignService;
@@ -136,6 +134,8 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderDao, OmsOrderEntity
     @Transactional
     @Override
     public SubmitOrderResponseVo submitOrder(OrderSubmitVo vo) {
+        submitVoThreadLocal.set(vo);
+
         SubmitOrderResponseVo response = new SubmitOrderResponseVo();
         MemberResponseVo memberRespVo = LoginUserInterceptor.loginUser.get();
         response.setCode(0);
@@ -182,6 +182,7 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderDao, OmsOrderEntity
                 //为了保证高并发，库存服务自己回滚，可以发消息个库存服务；
                 //库存服务本身也可以自动解锁模式 使用消息队列
                 R r = wareFeignService.orderLockStock(lockVo);
+                response.setOrder(order.getOrder());
                 /*if(r.getCode() == 0){
                     //锁成功了
                     response.setOrder(order.getOrder());
@@ -314,7 +315,7 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderDao, OmsOrderEntity
         OmsOrderItemEntity itemEntity = new OmsOrderItemEntity();
         Long skuId = cartItem.getSkuId();
         R spuInfoBySkuId = productFeignService.getSpuInfoBySkuId(skuId);
-        SpuInfoVo data = spuInfoBySkuId.getData(new TypeReference<SpuInfoVo>() {
+        SpuInfoVo data = spuInfoBySkuId.getData("skuInfo",new TypeReference<SpuInfoVo>() {
         });
         itemEntity.setSpuId(data.getId());
         itemEntity.setSpuBrand(data.getBrandId().toString());

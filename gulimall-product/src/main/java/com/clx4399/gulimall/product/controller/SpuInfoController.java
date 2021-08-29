@@ -2,7 +2,9 @@ package com.clx4399.gulimall.product.controller;
 
 import com.clx4399.common.utils.PageUtils;
 import com.clx4399.common.utils.R;
+import com.clx4399.gulimall.product.entity.SkuInfoEntity;
 import com.clx4399.gulimall.product.entity.SpuInfoEntity;
+import com.clx4399.gulimall.product.service.SkuInfoService;
 import com.clx4399.gulimall.product.service.SpuInfoService;
 import com.clx4399.gulimall.product.vo.spusavevo.SpuSaveVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,18 @@ import java.util.Map;
 public class SpuInfoController {
     @Autowired
     private SpuInfoService spuInfoService;
+
+    @Autowired
+    private SkuInfoService skuInfoService;
+
+    @GetMapping("/info/{skuId}")
+    //@RequiresPermissions("product:skuinfo:info")
+    public R getSkuInfo(@PathVariable("skuId") Long skuId){
+        SkuInfoEntity skuInfo = skuInfoService.getById(skuId);
+
+        return R.ok().put("skuInfo", skuInfo);
+    }
+
 
     /**
      * @param spuId
@@ -59,7 +73,6 @@ public class SpuInfoController {
     //@RequiresPermissions("product:spuinfo:info")
     public R info(@PathVariable("id") Long id){
 		SpuInfoEntity spuInfo = spuInfoService.getById(id);
-
         return R.ok().put("spuInfo", spuInfo);
     }
 

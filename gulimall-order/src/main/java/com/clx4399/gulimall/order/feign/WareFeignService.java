@@ -47,5 +47,5 @@ public interface WareFeignService {
      * @date 2021/8/26 14:43
      */
     @PostMapping("/ware/waresku/lock/order")
-    R orderLockStock(WareSkuLockVo lockVo);
+    R orderLockStock(@RequestBody WareSkuLockVo lockVo);
 }

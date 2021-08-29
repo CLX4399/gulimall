@@ -68,6 +68,12 @@
             <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
         </dependency>
 
+        <!--seata-->
+        <!--<dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-seata</artifactId>
+        </dependency>-->
+
         <!-- 属性效验-->
         <!-- https://mvnrepository.com/artifact/javax.validation/validation-api -->
         <dependency>

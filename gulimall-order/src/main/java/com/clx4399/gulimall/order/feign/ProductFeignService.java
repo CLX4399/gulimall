@@ -21,8 +21,8 @@ public interface ProductFeignService {
      * @describe: 获取sku信息
      * @date 2021/8/26 9:36
      */
-    @GetMapping("/product/spuinfo/skuId/{id}")
-    R getSpuInfoBySkuId(@PathVariable("id") Long skuId);
+    @GetMapping("/product/spuinfo/info/{skuId}")
+    R getSpuInfoBySkuId(@PathVariable("skuId") Long skuId);
 
 
 }
