@@ -17,6 +17,7 @@ import com.clx4399.gulimall.ware.service.WareSkuService;
 import com.clx4399.gulimall.ware.vo.OrderItemVo;
 import com.clx4399.gulimall.ware.vo.SkuHasStockVo;
 import com.clx4399.gulimall.ware.vo.WareSkuLockVo;
+import io.seata.spring.annotation.GlobalTransactional;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -110,7 +111,8 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
      * @param lockVo
      * @return
      */
-    @Transactional
+    @GlobalTransactional //高并发下不适用，不使用seata,使用可靠消息+最终一致性方案
+    //@Transactional
     @Override
     public boolean orderLockStock(WareSkuLockVo lockVo) {
 

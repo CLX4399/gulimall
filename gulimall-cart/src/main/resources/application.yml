@@ -1,5 +1,5 @@
 server:
-  port: 21000
+  port: 21001
 spring:
   redis:
     password: clx4399

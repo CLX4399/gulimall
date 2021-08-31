@@ -5,7 +5,7 @@ spring:
     port: 6379
   rabbitmq:
     host: 139.224.113.89
-    port: 15672
+    port: 5672
     virtual-host: /
   datasource:
     username: root

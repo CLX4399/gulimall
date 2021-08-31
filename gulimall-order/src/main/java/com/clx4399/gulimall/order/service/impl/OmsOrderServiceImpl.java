@@ -3,6 +3,7 @@ package com.clx4399.gulimall.order.service.impl;
 import com.alibaba.fastjson.TypeReference;
 import com.alibaba.nacos.common.util.UuidUtils;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import com.clx4399.common.exception.NoStockException;
 import com.clx4399.common.utils.R;
 import com.clx4399.common.vo.MemberResponseVo;
 import com.clx4399.gulimall.order.entity.OmsOrderItemEntity;
@@ -182,18 +183,18 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderDao, OmsOrderEntity
                 //为了保证高并发，库存服务自己回滚，可以发消息个库存服务；
                 //库存服务本身也可以自动解锁模式 使用消息队列
                 R r = wareFeignService.orderLockStock(lockVo);
-                response.setOrder(order.getOrder());
-                /*if(r.getCode() == 0){
+                if(r.getCode() == 0){
                     //锁成功了
                     response.setOrder(order.getOrder());
+                    int a = 10 / 0;
                     //TODO 订单创建成功发送消息给MQ
-                    rabbitTemplate.convertAndSend("order-event-exchange","order.create.order",order.getOrder());
+                    //rabbitTemplate.convertAndSend("order-event-exchange","order.create.order",order.getOrder());
                     return response;
                 } else {
                     //锁定失败
                     String msg = (String) r.get("msg");
                     throw new NoStockException(msg);
-                }*/
+                }
 
             }else {
                 //金额校验失败

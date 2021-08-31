@@ -8,13 +8,14 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
+
+@EnableRabbit
 @MapperScan("com.clx4399.gulimall.order.dao")
 @EnableFeignClients
-@SpringBootApplication
-@EnableRabbit
 @EnableDiscoveryClient
 @EnableRedisHttpSession
-public class GulimallOrderApplication {
+@SpringBootApplication
+public class GulimallOrderApplication  {
 
     public static void main(String[] args) {
         SpringApplication.run(GulimallOrderApplication.class, args);
