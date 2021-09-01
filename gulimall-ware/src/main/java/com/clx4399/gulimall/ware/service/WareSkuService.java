@@ -1,6 +1,7 @@
 package com.clx4399.gulimall.ware.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.clx4399.common.to.mq.StockLockedTo;
 import com.clx4399.common.utils.PageUtils;
 import com.clx4399.gulimall.ware.entity.WareSkuEntity;
 import com.clx4399.gulimall.ware.vo.SkuHasStockVo;
@@ -48,5 +49,15 @@ public interface WareSkuService extends IService<WareSkuEntity> {
      * @date 2021/8/26 14:46
      */
     boolean orderLockStock(WareSkuLockVo lockVo);
+
+    /**
+     * @param to
+     * @return void
+     * @author CLX
+     * @describe: 解锁库存
+     * @date 2021/8/31 20:08
+     */
+    void unLockStock(StockLockedTo to);
+
 }
 

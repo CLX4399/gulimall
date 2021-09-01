@@ -1,4 +1,6 @@
 spring:
+  rabbitmq:
+    host: nnour.cn
   datasource:
     username: root
     password: root

@@ -38,5 +38,14 @@ public interface OmsOrderService extends IService<OmsOrderEntity> {
      * @date 2021/8/25 17:45
      */
     SubmitOrderResponseVo submitOrder(OrderSubmitVo vo);
+
+    /**
+     * @param orderSn
+     * @return com.clx4399.gulimall.order.entity.OmsOrderEntity
+     * @author CLX
+     * @describe: 获取订单信息根据订单编号
+     * @date 2021/8/31 20:24
+     */
+    OmsOrderEntity getOrderByOrderSn(String orderSn);
 }
 

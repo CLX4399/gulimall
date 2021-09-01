@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
  * @date 2021-08-23 11:36:09
  */
 @Configuration
-public class GreymallFeignConfig {
+public class  GreymallFeignConfig {
 
     /**
      * @param

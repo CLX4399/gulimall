@@ -204,6 +204,13 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderDao, OmsOrderEntity
         return response;
     }
 
+    @Override
+    public OmsOrderEntity getOrderByOrderSn(String orderSn) {
+        QueryWrapper<OmsOrderEntity> omsOrderEntityQueryWrapper = new QueryWrapper<>();
+        OmsOrderEntity orderEntity = baseMapper.selectOne(omsOrderEntityQueryWrapper.eq("order_sn", orderSn));
+        return orderEntity;
+    }
+
     /**
      * @param order
      * @return void
