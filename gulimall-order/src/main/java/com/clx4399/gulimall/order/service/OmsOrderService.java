@@ -5,6 +5,7 @@ import com.clx4399.common.utils.PageUtils;
 import com.clx4399.gulimall.order.entity.OmsOrderEntity;
 import com.clx4399.gulimall.order.vo.OrderConfirmVo;
 import com.clx4399.gulimall.order.vo.OrderSubmitVo;
+import com.clx4399.gulimall.order.vo.PayVo;
 import com.clx4399.gulimall.order.vo.SubmitOrderResponseVo;
 
 import java.util.Map;
@@ -47,5 +48,23 @@ public interface OmsOrderService extends IService<OmsOrderEntity> {
      * @date 2021/8/31 20:24
      */
     OmsOrderEntity getOrderByOrderSn(String orderSn);
+
+    /**
+     * @param entity
+     * @return void
+     * @author CLX
+     * @describe:  关闭订单并取消库存
+     * @date 2021/9/1 21:30
+     */
+    void closeOrder(OmsOrderEntity entity);
+
+    /**
+     * @param orderSn
+     * @return com.clx4399.gulimall.order.vo.PayVo
+     * @author CLX
+     * @describe: 获取订单的支付信息
+     * @date 2021/9/2 11:36
+     */
+    PayVo getOrderPay(String orderSn);
 }
 

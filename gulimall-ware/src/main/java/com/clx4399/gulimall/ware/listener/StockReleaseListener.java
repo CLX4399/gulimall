@@ -1,5 +1,6 @@
 package com.clx4399.gulimall.ware.listener;
 
+import com.clx4399.common.to.mq.OrderTo;
 import com.clx4399.common.to.mq.StockLockedTo;
 import com.clx4399.gulimall.ware.service.WareSkuService;
 import com.rabbitmq.client.Channel;
@@ -29,6 +30,17 @@ public class StockReleaseListener {
     @RabbitHandler
     public void handlerStockLockedRelease(StockLockedTo to, Message message, Channel channel) throws IOException {
         log.info("库存释放队列消息接收***");
+        try {
+            wareSkuService.unLockStock(to);
+            channel.basicAck(message.getMessageProperties().getDeliveryTag(),false);
+        } catch (IOException e) {
+            channel.basicReject(message.getMessageProperties().getDeliveryTag(),true);
+        }
+    }
+
+    @RabbitHandler
+    public void handlerStockOrderCloseRelease(OrderTo to, Message message, Channel channel) throws IOException {
+        log.info("订单关闭库存释放队列消息接收***");
         try {
             wareSkuService.unLockStock(to);
             channel.basicAck(message.getMessageProperties().getDeliveryTag(),false);

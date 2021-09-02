@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.clx4399.common.exception.NoStockException;
+import com.clx4399.common.to.mq.OrderTo;
 import com.clx4399.common.to.mq.StockDetailTo;
 import com.clx4399.common.to.mq.StockLockedTo;
 import com.clx4399.common.utils.PageUtils;
@@ -210,6 +211,22 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
                 throw new RuntimeException("远程服务失败");
             }
         }
+    }
+
+    @Override
+    public void unLockStock(OrderTo to) {
+        String orderSn = to.getOrderSn();
+         WareOrderTaskEntity wareOrderTaskEntity = wareOrderTaskService.getOrderTaskByOrderSn(orderSn);
+        Long orderId = wareOrderTaskEntity.getOrderId();
+        //按照工作单找到所有没有解锁的库存，进行解锁
+        List<WareOrderTaskDetailEntity> entities = wareOrderTaskDetailService.list(new QueryWrapper<WareOrderTaskDetailEntity>()
+                .eq("task_id", orderId)
+                .eq("lock_status", 1));
+        for (WareOrderTaskDetailEntity entity : entities) {
+            //依次解锁库存锁定
+            unLockStock(entity.getSkuId(),entity.getWareId(),entity.getSkuNum(),entity.getId());
+        }
+
     }
 
     private void unLockStock(Long skuId, Long wareId, Integer num, Long taskDetailId){

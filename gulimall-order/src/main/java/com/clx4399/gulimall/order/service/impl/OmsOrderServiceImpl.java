@@ -4,6 +4,7 @@ import com.alibaba.fastjson.TypeReference;
 import com.alibaba.nacos.common.util.UuidUtils;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.clx4399.common.exception.NoStockException;
+import com.clx4399.common.to.mq.OrderTo;
 import com.clx4399.common.utils.R;
 import com.clx4399.common.vo.MemberResponseVo;
 import com.clx4399.gulimall.order.entity.OmsOrderItemEntity;
@@ -16,6 +17,8 @@ import com.clx4399.gulimall.order.intercept.LoginUserInterceptor;
 import com.clx4399.gulimall.order.service.OmsOrderItemService;
 import com.clx4399.gulimall.order.to.OrderCreateTo;
 import com.clx4399.gulimall.order.vo.*;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
@@ -74,6 +77,9 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderDao, OmsOrderEntity
 
     @Autowired
     OmsOrderItemService orderItemService;
+
+    @Autowired
+    RabbitTemplate rabbitTemplate;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -185,10 +191,10 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderDao, OmsOrderEntity
                 R r = wareFeignService.orderLockStock(lockVo);
                 if(r.getCode() == 0){
                     //锁成功了
-                    response.setOrder(order.getOrder());
-                    int a = 10 / 0;
+                    //int a = 10 / 0;
                     //TODO 订单创建成功发送消息给MQ
-                    //rabbitTemplate.convertAndSend("order-event-exchange","order.create.order",order.getOrder());
+                    rabbitTemplate.convertAndSend("order-event-exchange","order.create.order",order.getOrder());
+                    response.setOrder(order.getOrder());
                     return response;
                 } else {
                     //锁定失败
@@ -209,6 +215,43 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderDao, OmsOrderEntity
         QueryWrapper<OmsOrderEntity> omsOrderEntityQueryWrapper = new QueryWrapper<>();
         OmsOrderEntity orderEntity = baseMapper.selectOne(omsOrderEntityQueryWrapper.eq("order_sn", orderSn));
         return orderEntity;
+    }
+
+    @Override
+    public void closeOrder(OmsOrderEntity entity) {
+        OmsOrderEntity orderEntity = this.getById(entity.getId());
+        if(orderEntity.getStatus() == OrderStatusEnum.CREATE_NEW.getCode()){
+            //关单
+            OmsOrderEntity update = new OmsOrderEntity();
+            update.setId(entity.getId());
+            update.setStatus(OrderStatusEnum.CANCEL.getCode());
+            this.updateById(update);
+            OrderTo orderTo = new OrderTo();
+            BeanUtils.copyProperties(orderEntity,orderTo);
+            //发给MQ一个
+            try {
+                //TODO 保证消息一定会发送出去,每一个消息都可以做好日志记录（给数据库保存每个消息的详细消息）
+                rabbitTemplate.convertAndSend("order-event-exchange","order.release.other",orderTo);
+            } catch (Exception e) {
+                //TODO 将没发送的消息进行重试发送。
+                //while
+            }
+        }
+
+    }
+
+    @Override
+    public PayVo getOrderPay(String orderSn) {
+        OmsOrderEntity orderByOrderSn = this.getOrderByOrderSn(orderSn);
+        List<OmsOrderItemEntity> itemEntities = orderItemService.list(new QueryWrapper<OmsOrderItemEntity>().eq("order_sn", orderSn));
+        OmsOrderItemEntity entity = itemEntities.get(0);
+        PayVo payVo = new PayVo();
+        payVo.setOut_trade_no(orderSn);
+        payVo.setSubject(entity.getSkuName());
+        BigDecimal bigDecimal = orderByOrderSn.getPayAmount().setScale(2, BigDecimal.ROUND_UP);
+        payVo.setTotal_amount(bigDecimal.toString());
+        payVo.setBody(entity.getSkuAttrsVals());
+        return payVo;
     }
 
     /**
