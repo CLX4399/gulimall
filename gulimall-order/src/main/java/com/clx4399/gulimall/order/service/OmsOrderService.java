@@ -3,10 +3,7 @@ package com.clx4399.gulimall.order.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.clx4399.common.utils.PageUtils;
 import com.clx4399.gulimall.order.entity.OmsOrderEntity;
-import com.clx4399.gulimall.order.vo.OrderConfirmVo;
-import com.clx4399.gulimall.order.vo.OrderSubmitVo;
-import com.clx4399.gulimall.order.vo.PayVo;
-import com.clx4399.gulimall.order.vo.SubmitOrderResponseVo;
+import com.clx4399.gulimall.order.vo.*;
 
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -66,5 +63,23 @@ public interface OmsOrderService extends IService<OmsOrderEntity> {
      * @date 2021/9/2 11:36
      */
     PayVo getOrderPay(String orderSn);
+
+    /**
+     * @param params
+     * @return com.clx4399.common.utils.PageUtils
+     * @author CLX
+     * @describe: 获取订单信息
+     * @date 2021/9/2 20:29
+     */
+    PageUtils listWithItem(Map<String, Object> params);
+
+    /**
+     * @param vo
+     * @return java.lang.String
+     * @author CLX
+     * @describe: 处理支付结果
+     * @date 2021/9/2 22:12
+     */
+    String handlePayResult(PayAsyncVo vo);
 }
 

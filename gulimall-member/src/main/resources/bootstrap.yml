@@ -1,4 +1,8 @@
 spring:
+  redis:
+    password: clx4399
+    host: 139.224.113.89
+    port: 6379
   application:
     name: gulimall-member
   cloud:

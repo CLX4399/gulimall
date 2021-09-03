@@ -22,11 +22,11 @@ public class AlipayTemplate {
     // 支付宝公钥,查看地址：https://openhome.alipay.com/platform/keyManage.htm 对应APPID下的支付宝公钥。
     private String alipay_public_key = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAq/5eSRoCZhkKxBeRUMqMd4GEE9sBlDXoeOfNn6hdHWYWjYIzZ3BmygLtXhVYfiQeG1yGV08n87ogx2I+GRal5rFmIlF+S/9PEAV9nJjwoeSZZdEBdAqvv2kzZnLkB/7PIPW1JjYCmgETifUhLL6tFCe8O40iuyklfNtxKuBeilm21ANg7O3QwRggcoB1zja7WiF2cYH68ZHouLuPohia3ymYOy6bygLtB2fURZv7JDU7qAYmv2gzNsUF7GuaU0Yi6awJbj2RjMzy0nF8Lkg1yeI0lMHVl/BZUX7U3QTNLY1gARTN8L19dlrmAENcM8NQ4JHWQCxJIe0iq9nH+FpS2QIDAQAB";    // 服务器[异步通知]页面路径  需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
     // 支付宝会悄悄的给我们发送一个请求，告诉我们支付成功的信息
-    private String notify_url = "http://weixhh.utools.club/payed/notify";
+    private String notify_url = "http://392n82z058.zicp.vip/payed/notify";
 
     // 页面跳转同步通知页面路径 需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
     //同步通知，支付成功，一般跳转到成功页
-    private String return_url = "http://member.greymall.com/memberOrder.html";
+    private String return_url = "http://member.gulimall.com/memberOrder.html";
 
     // 签名方式
     private String sign_type = "RSA2";

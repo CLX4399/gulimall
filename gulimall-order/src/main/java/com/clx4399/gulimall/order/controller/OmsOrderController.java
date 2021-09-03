@@ -34,6 +34,20 @@ public class OmsOrderController {
 
 
     /**
+     * @param params
+     * @return com.clx4399.common.utils.R
+     * @author CLX
+     * @describe: 获取当前用户订单信息
+     * @date 2021/9/2 20:28
+     */
+    @PostMapping("/listWithItem")
+    public R listWithItem(@RequestBody Map<String, Object> params){
+        PageUtils page = omsOrderService.listWithItem(params);
+        return R.ok().put("page", page);
+    }
+
+
+    /**
      * 列表
      */
     @RequestMapping("/list")
