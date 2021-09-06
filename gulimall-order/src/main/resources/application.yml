@@ -7,6 +7,9 @@ spring:
     host: 139.224.113.89
     port: 5672
     virtual-host: /
+    listener:
+      direct:
+        acknowledge-mode: manual
   datasource:
     username: root
     password: root

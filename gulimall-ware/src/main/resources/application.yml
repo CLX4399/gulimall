@@ -1,6 +1,9 @@
 spring:
   rabbitmq:
     host: nnour.cn
+    listener:
+      direct:
+        acknowledge-mode: manual
   datasource:
     username: root
     password: root
