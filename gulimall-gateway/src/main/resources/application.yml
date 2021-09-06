@@ -55,10 +55,15 @@ spring:
           predicates:
             - Host=order.gulimall.com
 
-        - id: gulimall-order_member
+        - id: gulimall-member_router
           uri: lb://gulimall-member
           predicates:
             - Host=member.gulimall.com
+
+        - id: gulimall-seckill
+          uri: lb://gulimall-seckill
+          predicates:
+            - Host=seckill.gulimall.com
 
         - id: gulimall_host_route
           uri: lb://gulimall-product
