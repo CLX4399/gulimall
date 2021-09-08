@@ -1,9 +1,15 @@
 server:
   port: 25000
 spring:
+  rabbitmq:
+    host: 139.224.113.89
+    port: 5672
+    virtual-host: /
   redis:
     password: clx4399
     host: 139.224.113.89
     port: 6379
   session:
     store-type: redis
+  thymeleaf:
+    cache: false

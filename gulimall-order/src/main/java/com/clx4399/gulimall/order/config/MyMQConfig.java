@@ -57,7 +57,6 @@ public class MyMQConfig {
                 null);
     }
 
-
     /**
      * 订单释放直接和库存释放直接绑定
      * @return

@@ -1,6 +1,7 @@
 package com.clx4399.gulimall.order.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.clx4399.common.to.mq.SeckillOrderTo;
 import com.clx4399.common.utils.PageUtils;
 import com.clx4399.gulimall.order.entity.OmsOrderEntity;
 import com.clx4399.gulimall.order.vo.*;
@@ -81,5 +82,14 @@ public interface OmsOrderService extends IService<OmsOrderEntity> {
      * @date 2021/9/2 22:12
      */
     String handlePayResult(PayAsyncVo vo);
+
+    /**
+     * @param seckillOrder
+     * @return void
+     * @author CLX
+     * @describe: 秒杀商品创建订单
+     * @date 2021/9/7 16:45
+     */
+    void createSeckillOrder(SeckillOrderTo seckillOrder);
 }
 

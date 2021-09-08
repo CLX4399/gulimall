@@ -5,6 +5,7 @@ import com.alibaba.nacos.common.util.UuidUtils;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.clx4399.common.exception.NoStockException;
 import com.clx4399.common.to.mq.OrderTo;
+import com.clx4399.common.to.mq.SeckillOrderTo;
 import com.clx4399.common.utils.R;
 import com.clx4399.common.vo.MemberResponseVo;
 import com.clx4399.gulimall.order.entity.OmsOrderItemEntity;
@@ -293,6 +294,30 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderDao, OmsOrderEntity
             this.baseMapper.updateOrderStatus(outTradeNo,OrderStatusEnum.PAYED.getCode());
         }
         return "success";
+    }
+
+    @Override
+    public void createSeckillOrder(SeckillOrderTo seckillOrder) {
+        //TODO 保存订单信息
+        OmsOrderEntity orderEntity = new OmsOrderEntity();
+        orderEntity.setOrderSn(seckillOrder.getOrderSn());
+        orderEntity.setMemberId(seckillOrder.getMemberId());
+
+        orderEntity.setStatus(OrderStatusEnum.CREATE_NEW.getCode());
+
+        BigDecimal multiply = seckillOrder.getSeckillPrice().multiply(new BigDecimal(seckillOrder.getNum()));
+        orderEntity.setPayAmount(multiply);
+
+        this.save(orderEntity);
+
+        //TODO 保存订单项信息
+        OmsOrderItemEntity orderItemEntity = new OmsOrderItemEntity();
+        orderItemEntity.setOrderSn(seckillOrder.getOrderSn());
+        orderItemEntity.setRealAmount(multiply);
+        //TODO 获取当前sku的详细信息 productFeignService.getSpuInfoBySkuId()
+        orderItemEntity.setSkuQuantity(seckillOrder.getNum());
+
+        orderItemService.save(orderItemEntity);
     }
 
     /**

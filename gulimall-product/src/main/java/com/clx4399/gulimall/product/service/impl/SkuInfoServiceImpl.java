@@ -1,16 +1,20 @@
 package com.clx4399.gulimall.product.service.impl;
 
+import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.clx4399.common.utils.PageUtils;
 import com.clx4399.common.utils.Query;
+import com.clx4399.common.utils.R;
 import com.clx4399.gulimall.product.dao.SkuInfoDao;
 import com.clx4399.gulimall.product.entity.SkuImagesEntity;
 import com.clx4399.gulimall.product.entity.SkuInfoEntity;
 import com.clx4399.gulimall.product.entity.SpuImagesEntity;
 import com.clx4399.gulimall.product.entity.SpuInfoDescEntity;
+import com.clx4399.gulimall.product.feign.SeckillFeignService;
 import com.clx4399.gulimall.product.service.*;
+import com.clx4399.gulimall.product.vo.SeckillInfoVo;
 import com.clx4399.gulimall.product.vo.SkuItemSaleAttrVo;
 import com.clx4399.gulimall.product.vo.SkuItemVo;
 import com.clx4399.gulimall.product.vo.SpuItemAttrGroupVo;
@@ -42,6 +46,9 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
 
     @Autowired
     private ThreadPoolExecutor executor;
+
+    @Autowired
+    private SeckillFeignService seckillFeignService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -142,7 +149,16 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
             skuItemVo.setAttrGroups(attrGroupVos);
         }, executor);
 
-        CompletableFuture.allOf(imagesFuture,saleAttrsFuture,descFuture,attGroupFuture).get();
+
+        CompletableFuture<Void> seckillCompletableFuture = CompletableFuture.runAsync(() -> {
+            R skuSeckillInfo = seckillFeignService.getSkuSeckillInfo(Long.valueOf(skuId));
+            SeckillInfoVo data = skuSeckillInfo.getData(new TypeReference<SeckillInfoVo>() {
+            });
+            skuItemVo.setSeckillSkuVo(data);
+        }, executor);
+
+
+        CompletableFuture.allOf(imagesFuture,saleAttrsFuture,descFuture,attGroupFuture,seckillCompletableFuture).get();
 
         return skuItemVo;
     }

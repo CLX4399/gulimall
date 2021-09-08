@@ -20,7 +20,7 @@ public class RedissonConfig {
     public RedissonClient redisson() {
         Config config = new Config();
         // 创建单例模式的配置
-        config.useSingleServer().setAddress("redis://139.224.113.89:6379").setPassword("clx4399").setDatabase(3);
+        config.useSingleServer().setAddress("redis://139.224.113.89:6379").setPassword("clx4399").setDatabase(0);
         return Redisson.create(config);
     }
 

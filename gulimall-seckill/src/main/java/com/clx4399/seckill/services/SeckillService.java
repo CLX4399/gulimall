@@ -29,4 +29,24 @@ public interface SeckillService {
      * @date 2021/9/6 21:28
      */
     List<SeckillSkuRedisTo> getCurrentSeckillSkus();
+
+    /**
+     * @param skuId
+     * @return com.clx4399.seckill.to.SeckillSkuRedisTo
+     * @author CLX
+     * @describe: 根据skuid获取秒杀商品信息
+     * @date 2021/9/7 10:14
+     */
+    SeckillSkuRedisTo getSkuSeckillInfo(Long skuId);
+
+    /**
+     * @param killId
+	 * @param key
+	 * @param num
+     * @return java.lang.String
+     * @author CLX
+     * @describe: 商品秒杀抢购
+     * @date 2021/9/7 16:03
+     */
+    String kill(String killId, String key, Integer num);
 }
